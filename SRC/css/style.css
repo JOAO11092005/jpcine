@@ -1,0 +1,195 @@
+body{
+    text-align: center;
+    /* background-color: rgb(31, 19, 19); */
+    background: url(../img/𝐂𝐇𝐑𝐈𝐒𝐓𝐌𝐀𝐒\ 𝐓𝐑𝐈𝐏__\ 𝐧𝐨𝐚𝐫𝐭\ [✓]\ -\ Apresentações\ e\ avisos.gif) center center no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+header .logo img{
+  width: 240px;
+}
+header{
+    background-color: black;
+    background-size: cover;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+header nav ul{
+    margin-right: 40px;
+    gap: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header nav ul li a{
+    border-bottom: 1px solid rgb(255, 253, 253);
+    padding: 20px;
+    width: 160px;
+    transition: 0.5s;
+}
+header nav ul li a:hover{
+    border-bottom: 1px solid rgb(65, 38, 152);
+    transition: 0.5s;
+    color: rgb(65, 38, 152);
+}
+input{
+    display: none;
+}
+/* .hamburguer label{
+    position: relative;
+    width: 30px;
+} */
+.menu-hamburguer{
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.hamburguer{
+    display: none;
+    height: 2px;
+    background-color:white;
+    position: relative;
+    transition: 0.7s;
+}
+/* .menu-hamburguer{
+    width: 30px;
+} */
+.hamburguer:before{
+    content: "";
+    width: 30px;
+    height: 2px;
+    background-color:white;
+    position: absolute;
+    bottom: -10px;
+    transition: 0.7s;
+}
+.hamburguer:after{
+    content: "";
+    width: 30px;
+    height: 2px;
+    position: absolute;
+    top: -10px;
+    background-color:white;
+    transition: 0.7s;
+}
+input:checked ~label .hamburguer{
+    transform: rotate(45deg);
+    transition: 0.7s;
+}
+input:checked ~label .hamburguer:before{
+    transform: rotate(90deg);
+    bottom: 0;
+    transition: 0.7s;
+}
+input:checked ~label .hamburguer:after{
+    transform: rotate(90deg);
+    top: 0;
+    transition: 0.7s;
+}
+input:checked ~nav{
+    display: block;
+}
+
+.filme-recomendado{
+    width: 100%;
+    height: 480px;
+    background-color: rgb(5, 3, 3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.filme-recomendado iframe{
+    /* height: 460px; */
+    height: 470px;
+    width: 1000px;
+    border: none;
+    margin-right: 40px;
+    border-radius: 10px;
+}
+.filme-recomendado .descricao{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-align: justify;
+    width: 100%;
+}
+.filme-recomendado .descricao p{
+    width: 500px;
+    margin-top: 30px;
+}
+.titulo-filme{
+    height:70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.titulo-filme h1{
+    font-size: 35px;
+   
+}
+.filmes{
+    
+    width: 100%;
+    height: 360px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.filmes a img{
+    width: 210px;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+.filmes a{
+    padding: 10px;
+    width: 210px;
+}
+.filmes a img:hover{
+    padding: 3px;
+    transition: 0.5s;
+    border: 1px solid white;
+}
+
+.series{
+    
+    width: 100%;
+    height: 360px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.serie a img{
+    width: 210px;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+.serie a img:hover{
+    padding: 3px;
+    transition: 0.5s;
+    border: 1px solid white;
+}
+
+footer{
+    width: 100%;
+    height: 100px;
+    background-color: rgba(12, 7, 7, 0.989);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20PX;
+}

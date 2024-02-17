@@ -1,0 +1,85 @@
+@media (max-width: 1400px){
+    .filme-recomendado iframe{
+        height: 470px;
+        width: 850px;
+        border: none;
+        border-radius: 10px;
+    }
+    .filme-recomendado .descricao p{
+        width: 400px;
+        margin-top: 30px;
+    }
+}
+@media (max-width:1247px){
+    .filme-recomendado{
+        flex-direction: column;
+    }
+    .filme-recomendado .reproduzindo{
+        width: 100%;
+    }
+    .filme-recomendado iframe{
+        /* height: 460px; */
+        height: 370px;
+        width: 100%;
+        border: none;
+        margin-right: 40px;
+        border-radius: 10px;
+    }
+    .filmes{
+        height: 920px;
+    }
+    .series{
+        height: 920px;
+    }
+}
+@media (max-width: 535px){
+    .series{
+        display: none;
+    }
+    .filmes{
+        height: 1920px;
+    }
+    .titulo-filme{
+        display: none;
+    }
+    header .logo img{
+        width: 140px;
+      }
+      .filme-recomendado .descricao p{
+        width: 390px;
+      }
+}
+@media (max-width: 767px){
+    header nav{
+        display: none
+    }
+    header nav ul{
+        flex-direction: column;
+    }
+    .hamburguer{
+        display: block;
+        margin-right: 50px;
+        position: relative;
+        
+    }
+    .pagina{
+        height: 300px;
+        position: absolute;
+        right: 0;
+        margin-top: 300px;
+        display: block;
+        
+    }
+    label{
+        margin-bottom: 30px;
+    }
+    header nav {
+        margin-top: 30px;
+        background-color: black;
+        padding-bottom: 30px;
+        border-radius: 10px;
+    }
+    header nav ul li a{
+        width: 200px;
+    }
+}
