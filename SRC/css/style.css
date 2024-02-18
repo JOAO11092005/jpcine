@@ -113,8 +113,8 @@ input:checked ~nav{
 .filme-recomendado{
     width: 100%;
     height: 480px;
-    /* background-color: rgb(5, 3, 3); */
-    background-color: red;
+    background-color: rgb(5, 3, 3);
+  
     display: flex;
     align-items: center;
     justify-content: center;
