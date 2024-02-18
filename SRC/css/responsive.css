@@ -39,6 +39,23 @@
     .series{
         display: none;
     }
+    .filme-recomendado{
+        display: none;
+    }
+    .poster-mario{
+        display: block;
+        background: url(https://img.elo7.com.br/product/main/497C717/poster-super-mario-bross-filme-e-cartaz-adesivo-42-5x60cm-mario.jpg)center center no-repeat;
+        width: 100%;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .poster-mario  img{
+        width: 60px;
+        background-color: black;
+        border-radius: 50px;
+    }
     .filmes{
         height: 100%;
         margin-top: 20px;
