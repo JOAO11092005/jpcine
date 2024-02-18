@@ -1,4 +1,4 @@
-// console.log(alert('Olá seja bem-vindo(a) a JPCINE o site esta em desenvolvimento então não espere muita coisa. Anteciosamente (JPN)'))
+ console.log(alert('Olá seja bem-vindo(a) a JPCINE o site esta em desenvolvimento então não espere muita coisa. Anteciosamente (JPN)'))
 
 
 document.addEventListener("DOMContentLoaded", function() {
