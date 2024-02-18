@@ -6,6 +6,9 @@
     .descricao{
         width: 100%;
     }
+    .descricao {
+        height: 100%;
+    }
     .descricao p{
         width: 100%;
     }
@@ -39,5 +42,8 @@
         border: none;
         margin-right: 40px;
         border-radius: 10px;
+       }
+       footer{
+        position: relative;
        }
 }
