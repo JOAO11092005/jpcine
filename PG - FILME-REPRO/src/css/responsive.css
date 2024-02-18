@@ -2,10 +2,32 @@
     .filme-reproduzindo{
         flex-direction: column;
     }
+    
     .descricao{
         width: 100%;
     }
     .descricao p{
         width: 100%;
     }
+}
+@media (max-width: 1400px){
+    .filme-reproduzindo{
+        margin-top: 20px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .filme-recomendado iframe{
+    /* height: 460px; */
+    height: 200px;
+    width: 100%;
+    border: none;
+    margin-right: 40px;
+    border-radius: 10px;
+   }
+   .filme{
+    height: 300px;
+   }
 }
