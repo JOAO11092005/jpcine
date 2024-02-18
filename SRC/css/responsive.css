@@ -1,7 +1,7 @@
 @media (max-width: 1400px){
     .filme-recomendado iframe{
         height: 470px;
-        width: 850px;
+        width: 750px;
         border: none;
         border-radius: 10px;
     }
@@ -26,10 +26,13 @@
         border-radius: 10px;
     }
     .filmes{
-        height: 920px;
+        height: 100%;
     }
     .series{
-        height: 920px;
+        height:100%;
+    }
+    .titulo-filme{
+        margin-top: 20px;
     }
 }
 @media (max-width: 535px){
@@ -37,7 +40,8 @@
         display: none;
     }
     .filmes{
-        height: 1920px;
+        height: 100%;
+        margin-top: 20px;
     }
     .titulo-filme{
         display: none;
@@ -48,6 +52,12 @@
       .filme-recomendado .descricao p{
         width: 390px;
       }
+      /* .filme-recomendado {
+        flex-direction: row;
+      }
+     .filme-recomendado .descricao{
+        display: none;
+      } */
 }
 @media (max-width: 767px){
     header nav{

@@ -1,0 +1,16 @@
+@media (max-width: 1356px){
+    .filme-reproduzindo{
+        flex-direction: column;
+    }
+    .descricao{
+        width: 100%;
+    }
+    .descricao p{
+        width: 100%;
+    }
+}
+@media (max-width:500px){
+   .filme-reproduzindo .filme iframe{
+    height: 200px;
+   }
+}

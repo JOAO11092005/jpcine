@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPCINE - FILMS - TV AO VIVO</title>
+    <link rel="stylesheet" href="../SRC/css/reset.css">
+    <link rel="stylesheet" href="./src/css/style.css">
+    <link rel="stylesheet" href="./src/css/responsive.css">
+    <link rel="stylesheet" href="../SRC/img/icone.ico">
+</head>
+
+<body>
+    <header>
+        <a href="../index.html">
+            <img src="./src/img/ícone-ui-linear-de-gradiente-perfeito-pixel-do-botão-seta-à-esquerda-voltar-controle-da-barra-ferramentas-faixa-anterior-252014243-removebg-preview.png"
+                alt="seta">
+        </a>
+    </header>
+    <section class="filme-reproduzindo">
+        <div class="filme">
+            <iframe id="filmeIframe" src="" allow="autoplay" allowfullscreen></iframe>
+        </div>
+        <div class="descricao" id="descricaoFilme">
+            <h2 class="titulo" id="titulo"></h2>
+            <p class="descricao" id="descricao"></p>
+            <p class="classificacao" id="classificacao"></p>
+        </div>
+    </section>
+    <footer>
+        <span>©</span>
+        <p>2024 JPCINE</p>
+    </footer>
+    <script>
+        // JavaScript para obter os detalhes do filme dos parâmetros da URL e atualizar a página
+        document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const titulo = urlParams.get('titulo');
+    let descricao = urlParams.get('descricao');
+    const classificacao = urlParams.get('classificacao');
+            const linkFilme = urlParams.get('link');
+
+             // Substitui as quebras de linha <br> por quebras de linha normais \n
+    descricao = descricao.replace(/<br>/g, '\n');
+            // Atualiza os detalhes do filme na página
+    document.getElementById('titulo').innerText = titulo;
+    document.getElementById('descricao').innerText = descricao;
+    document.getElementById('classificacao').innerText = classificacao;
+
+    const descricaoParagraphs = descricao.split('\n');
+    const descricaoElement = document.getElementById('descricao');
+    descricaoElement.innerHTML = ''; // Limpe o conteúdo existente
+    descricaoParagraphs.forEach(paragraph => {
+        const p = document.createElement('p');
+        p.innerText = paragraph.trim(); // Remova espaços em branco extras
+        descricaoElement.appendChild(p);
+    });
+
+    document.getElementById('classificacao').innerText = classificacao;
+            // Atualiza o link do iframe
+            document.getElementById('filmeIframe').src = linkFilme;
+        });
+    </script>
+</body>
+
+</html>
