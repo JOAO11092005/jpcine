@@ -83,7 +83,7 @@
     header nav ul{
         flex-direction: column;
     }
-    .hamburguer{
+    .menu-hamburguer{
         display: block;
         margin-right: 50px;
         position: relative;

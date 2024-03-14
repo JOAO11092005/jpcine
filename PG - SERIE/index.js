@@ -1,5 +1,45 @@
 //  console.log(alert('Olá seja bem-vindo(a) a JPCINE o site esta em desenvolvimento então não espere muita coisa. Anteciosamente (JPN)'))
+document.addEventListener('DOMContentLoaded', function() {
+    const inputPesquisa = document.querySelector('input[type="text"]');
+    const series = document.querySelectorAll('.serie');
+    const mensagem = document.createElement('p');
+    mensagem.textContent = 'Nenhuma série encontrada.';
+    mensagem.style.display = 'none';
 
+    inputPesquisa.addEventListener('input', function() {
+        const termoPesquisa = inputPesquisa.value.trim().toLowerCase();
+        let seriesEncontradas = false;
+
+        series.forEach(function(serie) {
+            const titulo = serie.querySelector('img').alt.trim().toLowerCase();
+
+            if (titulo.includes(termoPesquisa)) {
+                serie.style.display = 'block';
+                seriesEncontradas = true;
+            } else {
+                serie.style.display = 'none';
+            }
+        });
+
+        if (!seriesEncontradas) {
+            document.querySelector('.filmes').appendChild(mensagem);
+            mensagem.style.display = 'block';
+        } else {
+            if (document.querySelector('.filmes p')) {
+                mensagem.style.display = 'none';
+            }
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fecharAviso = document.querySelector('.fechar-aviso');
+    const avisoDesenvolvimento = document.querySelector('.aviso-desenvolvimento');
+
+    fecharAviso.addEventListener('click', function() {
+        avisoDesenvolvimento.style.display = 'none';
+    });
+});
 
 document.addEventListener("DOMContentLoaded", function() {
     // Adiciona um evento de clique para cada filme
@@ -13,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const linkFilme = this.querySelector(".link-do-filme").getAttribute("href");
 
             // Redireciona para a página PG - FILME-REPRO, passando os detalhes do filme como parâmetros de consulta
-            window.location.href = `./PG - FILME-REPRO/index.html?descricao=${encodeURIComponent(descricao)}&link=${encodeURIComponent(linkFilme)}`;
+            window.location.href = `../PG - FILME-REPRO/index.html?descricao=${encodeURIComponent(descricao)}&link=${encodeURIComponent(linkFilme)}`;
         });
     });
 });
