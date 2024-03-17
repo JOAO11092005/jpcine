@@ -225,3 +225,14 @@ footer{
     justify-content: center;
     font-size: 20PX;
 }
+.button{
+    background-color: rgb(37, 35, 35);
+    color: white;
+    border:1px solid white;
+    border-radius: 10px;
+    padding: 10px;
+}
+button a{
+    width: 100%;
+    height: 100%;
+}

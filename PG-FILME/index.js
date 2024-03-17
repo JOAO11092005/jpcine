@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const filmes = document.querySelectorAll('.filme');
     const mensagem = document.createElement('p');
     mensagem.textContent = 'Nenhum filme encontrado.';
+    mensagem.style.display = 'none'; // Oculta a mensagem inicialmente
 
     inputPesquisa.addEventListener('input', function() {
         const termoPesquisa = inputPesquisa.value.trim().toLowerCase();
@@ -21,15 +22,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        // Exibe ou oculta a mensagem de acordo com os filmes encontrados
         if (!filmesEncontrados) {
             document.querySelector('.filmes').appendChild(mensagem);
+            mensagem.style.display = 'block'; // Exibe a mensagem quando nenhum filme é encontrado
         } else {
-            if (document.querySelector('.filmes p')) {
-                document.querySelector('.filmes p').remove();
-            }
+            mensagem.style.display = 'none'; // Oculta a mensagem quando filmes são encontrados
         }
 
         ajustarTamanhoTela();
+    });
+
+    // Adiciona um ouvinte de eventos de 'input' para o campo de pesquisa
+    inputPesquisa.addEventListener('input', function() {
+        // Verifica se o campo de pesquisa está vazio
+        if (inputPesquisa.value.trim() === '') {
+            // Recarrega a página se o campo estiver vazio
+            window.location.reload();
+        }
     });
 
     function ajustarTamanhoTela() {
@@ -37,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.documentElement.style.height = '87%';
     }
 });
-
 
 document.addEventListener("DOMContentLoaded", function() {
     // Adiciona um evento de clique para cada filme
