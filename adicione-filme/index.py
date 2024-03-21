@@ -35,3 +35,4 @@ while True:
     if continuar.lower() != 's':
         break
     id_filme = obter_proximo_id(id_filme)
+
