@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player da Série</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #141414;
+            color: #e5e5e5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            text-align: center;
+            color: #e5e5e5;
+            margin: 20px 0;
+            font-size: 2rem;
+        }
+        .content {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+        .player {
+            flex: 2;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+        #playerContainer {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        #playerContainer iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .episodes {
+            flex: 1;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            height: 100%;
+            overflow-y: auto;
+        }
+        .episodes ul {
+            list-style: none;
+            padding: 0;
+        }
+        .episodes ul li {
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+        .episodes ul li a {
+            text-decoration: none;
+            color: #1db954;
+        }
+        .episodes ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBh1S9IfuLWEa3t3us47yye6NuY5DPCm8k",
+            authDomain: "jpcine-b36ff.firebaseapp.com",
+            databaseURL: "https://jpcine-b36ff-default-rtdb.firebaseio.com",
+            projectId: "jpcine-b36ff",
+            storageBucket: "jpcine-b36ff.appspot.com",
+            messagingSenderId: "123637183843",
+            appId: "1:123637183843:web:10b55a276c398408010f56",
+            measurementId: "G-RWPZQ5G3CR"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        function obterParametroUrl(nome) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nome);
+        }
+
+        function carregarSerie() {
+            const nomeSerie = obterParametroUrl('nome');
+            if (nomeSerie) {
+                firebase.database().ref('series/' + nomeSerie).once('value', snapshot => {
+                    const serie = snapshot.val();
+                    document.getElementById('tituloSerie').innerText = serie.nome;
+                    const playerContainer = document.getElementById('playerContainer');
+                    const episodiosList = document.getElementById('episodiosList');
+                    
+                    // Limpar a lista de episódios
+                    episodiosList.innerHTML = '';
+
+                    serie.episodios.forEach((episodio, index) => {
+                        const li = document.createElement('li');
+                        const status = episodio === "indisponível no momento" ? "Indisponivel" : "Disponivel";
+                        const link = episodio !== "indisponível no momento" ? episodio : '#';
+                        li.innerHTML = `<a href="#" data-url="${link}" ${episodio === "indisponível no momento" ? 'class="disabled"' : ''}>Episódio ${index + 1}</a> - ${status}`;
+                        episodiosList.appendChild(li);
+
+                        // Adicionar evento de clique para alterar o player
+                        li.querySelector('a').onclick = function(event) {
+                            event.preventDefault();
+                            const url = this.getAttribute('data-url');
+                            if (url && url !== '#') {
+                                const iframe = document.createElement('iframe');
+                                iframe.src = url;
+                                iframe.allowFullscreen = true;
+
+                                // Substituir o conteúdo do player
+                                playerContainer.innerHTML = '';
+                                playerContainer.appendChild(iframe);
+                            }
+                        };
+                    });
+
+                    // Carregar o primeiro episódio se disponível
+                    if (serie.episodios.length > 0 && serie.episodios[0] !== "indisponível no momento") {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = serie.episodios[0];
+                        iframe.allowFullscreen = true;
+                        playerContainer.appendChild(iframe);
+                    }
+                });
+            }
+        }
+
+        window.onload = carregarSerie;
+    </script>
+</head>
+<body>
+    <h1 id="tituloSerie">Carregando...</h1>
+    <div class="content">
+        <div id="playerContainer" class="player"></div>
+        <div class="episodes">
+            <ul id="episodiosList"></ul>
+        </div>
+    </div>
+</body>
+</html>

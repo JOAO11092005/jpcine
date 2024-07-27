@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JPCINE - Desenhos, Ação</title>
+    <title>JPCINE - Séries</title>
     <link rel="stylesheet" href="./SRC/css/reset.css">
-    <link rel="stylesheet" href="./SRC/css/style.css">
+    <link rel="stylesheet" href="./SRC/css/player-series-e-animes.css">
     <link rel="stylesheet" href="./SRC/css/aparelhos.css">
     <script src="https://kit.fontawesome.com/9256129f72.js" crossorigin="anonymous"></script>
     <style>
@@ -60,18 +60,19 @@
             100% { transform: rotate(360deg); }
         }
     </style>
+    
 </head>
 <body>
-    <div id="adblock-message" class="adblock-message">
+    <!-- <div id="adblock-message" class="adblock-message">
         <span>Por favor, instale um AdBlock para evitar anúncios durante a navegação. Disponível na <a href="https://chromewebstore.google.com/detail/gighmmpiobklfepjocnamgkkbiglidom" target="_blank">Web Store</a> ou na <a href="https://play.google.com/store/apps/details?id=org.adblockplus.browser" target="_blank">Play Store</a>.</span>
         <button id="close-adblock-message">&times;</button>
-    </div>
+    </div> -->
     <header>
         <a href="index.html">
             <div class="logo"></div>
         </a>
         <div class="pesquisar">
-            <input type="text" id="searchInput" placeholder="Digite o seu filme ">
+            <input type="text" id="searchInput" placeholder="Digite a sua série ">
             <i class="fa-solid fa-magnifying-glass lupa" id="searchButton"></i>
         </div>
 
@@ -83,10 +84,10 @@
         </nav> -->
     </header>
     <main>
-        <div id="movie-container"></div>
-        <div class="loading" id="loading">
+        <div id="serieLogoContainer" class="serie-logo"></div>
+        <!-- <div class="loading" id="loading">
             <div class="loading-circle"></div>
-        </div>
+        </div> -->
     </main>
     <footer class="footer">
         <div class="container">
@@ -97,7 +98,7 @@
                 <button id="botaopedido">Enviar</button>
             </div>
             <p>&copy; 2024 JPCINE. Todos os direitos reservados.</p>
-            <p>acesse nossos sites <a href="https://terror-tau.vercel.app/">Filmes de Teror </a> & <a href="./series.html">Series</a></p>
+            <p>acesse nossos sites <a href="https://jpcine.vercel.app">Filmes</a> & <a href="https://terror-tau.vercel.app">Terror</a></p>
         </div>
     </footer>
     <div id="confirmacaoModal" class="modal">
@@ -110,6 +111,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
-    <script src="./SRC/js/index.js"></script>
+    <script src="./SRC/js/serie.js"></script>
 </body>
 </html>
