@@ -13,71 +13,137 @@
             color: #e5e5e5;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             height: 100vh;
-            overflow: hidden;
-        }
-        h1 {
-            text-align: center;
-            color: #e5e5e5;
-            margin: 20px 0;
-            font-size: 2rem;
-        }
-        .content {
             display: flex;
-            flex: 1;
-            width: 100%;
-            height: 100%;
-        }
-        .player {
-            flex: 2;
-            background: #000;
-            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
-        #playerContainer {
-            width: 100%;
-            height: 100%;
+
+        .content {
+            flex: 1;
+            display: flex;
             position: relative;
         }
+
+        .player {
+            flex: 1;
+            height: 100%;
+            background: #000;
+            position: relative;
+        }
+
         #playerContainer iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             border: none;
         }
-        .episodes {
-            flex: 1;
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            height: 100%;
-            overflow-y: auto;
+
+        .episodes-sidebar {
+            width: 300px;
+            background: rgba(30, 30, 30, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            transition: right 0.3s ease;
+            z-index: 100;
         }
-        .episodes ul {
-            list-style: none;
-            padding: 0;
+
+        .episodes-sidebar.closed {
+            right: -300px;
         }
-        .episodes ul li {
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
-        }
-        .episodes ul li a {
-            text-decoration: none;
+
+        .episodes-sidebar h2 {
+            text-align: center;
+            margin-bottom: 10px;
             color: #1db954;
         }
-        .episodes ul li a:hover {
-            text-decoration: underline;
+
+        .episodes-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .episodes-list ul {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .episodes-list ul li {
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .episodes-list ul li a {
+            text-decoration: none;
+            color: #1db954;
+            padding: 10px;
+            border-radius: 5px;
+            background: #222;
+            display: block;
+        }
+
+        .episodes-list ul li a:hover {
+            background: #1db954;
+            color: #141414;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navigation-buttons button {
+            background: #1db954;
+            border: none;
+            color: #141414;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .navigation-buttons button:disabled {
+            background: #444;
+            cursor: not-allowed;
+        }
+
+        .toggle-sidebar-button {
+            background: #1db954;
+            border: none;
+            color: #141414;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 101;
+        }
+
+        .fullscreen-button {
+            background: #1db954;
+            border: none;
+            color: #141414;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
         }
     </style>
     <script>
-        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBh1S9IfuLWEa3t3us47yye6NuY5DPCm8k",
             authDomain: "jpcine-b36ff.firebaseapp.com",
@@ -90,9 +156,45 @@
         };
         firebase.initializeApp(firebaseConfig);
 
+        let currentIndex = 0;
+
         function obterParametroUrl(nome) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(nome);
+        }
+
+        function atualizarEpisodios(serie) {
+            const episodiosList = document.getElementById('episodiosList');
+            const totalEpisodios = serie.episodios.filter(e => e !== "indisponível no momento").length;
+            const episodiosPorPagina = 3;
+
+            episodiosList.innerHTML = '';
+
+            const episodiosDisponiveis = serie.episodios.filter(e => e !== "indisponível no momento");
+
+            for (let i = currentIndex; i < currentIndex + episodiosPorPagina && i < totalEpisodios; i++) {
+                const episodio = episodiosDisponiveis[i];
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="#" data-url="${episodio}">Episódio ${i + 1}</a>`;
+                episodiosList.appendChild(li);
+
+                li.querySelector('a').onclick = function(event) {
+                    event.preventDefault();
+                    const url = this.getAttribute('data-url');
+                    if (url) {
+                        const playerContainer = document.getElementById('playerContainer');
+                        const iframe = document.createElement('iframe');
+                        iframe.src = url;
+                        iframe.allowFullscreen = true;
+
+                        playerContainer.innerHTML = '';
+                        playerContainer.appendChild(iframe);
+                    }
+                };
+            }
+
+            document.getElementById('prevButton').disabled = currentIndex <= 0;
+            document.getElementById('nextButton').disabled = currentIndex + episodiosPorPagina >= totalEpisodios;
         }
 
         function carregarSerie() {
@@ -101,39 +203,14 @@
                 firebase.database().ref('series/' + nomeSerie).once('value', snapshot => {
                     const serie = snapshot.val();
                     document.getElementById('tituloSerie').innerText = serie.nome;
-                    const playerContainer = document.getElementById('playerContainer');
-                    const episodiosList = document.getElementById('episodiosList');
-                    
-                    // Limpar a lista de episódios
-                    episodiosList.innerHTML = '';
 
-                    serie.episodios.forEach((episodio, index) => {
-                        const li = document.createElement('li');
-                        const status = episodio === "indisponível no momento" ? "Indisponivel" : "Disponivel";
-                        const link = episodio !== "indisponível no momento" ? episodio : '#';
-                        li.innerHTML = `<a href="#" data-url="${link}" ${episodio === "indisponível no momento" ? 'class="disabled"' : ''}>Episódio ${index + 1}</a> - ${status}`;
-                        episodiosList.appendChild(li);
+                    atualizarEpisodios(serie);
 
-                        // Adicionar evento de clique para alterar o player
-                        li.querySelector('a').onclick = function(event) {
-                            event.preventDefault();
-                            const url = this.getAttribute('data-url');
-                            if (url && url !== '#') {
-                                const iframe = document.createElement('iframe');
-                                iframe.src = url;
-                                iframe.allowFullscreen = true;
-
-                                // Substituir o conteúdo do player
-                                playerContainer.innerHTML = '';
-                                playerContainer.appendChild(iframe);
-                            }
-                        };
-                    });
-
-                    // Carregar o primeiro episódio se disponível
-                    if (serie.episodios.length > 0 && serie.episodios[0] !== "indisponível no momento") {
+                    const primeiroEpisodioDisponivel = serie.episodios.find(e => e !== "indisponível no momento");
+                    if (primeiroEpisodioDisponivel) {
+                        const playerContainer = document.getElementById('playerContainer');
                         const iframe = document.createElement('iframe');
-                        iframe.src = serie.episodios[0];
+                        iframe.src = primeiroEpisodioDisponivel;
                         iframe.allowFullscreen = true;
                         playerContainer.appendChild(iframe);
                     }
@@ -141,16 +218,56 @@
             }
         }
 
+        function navegarParaPagina(direcao) {
+            currentIndex += direcao * 3;
+            carregarSerie();
+        }
+
+        function toggleFullscreen() {
+            const playerContainer = document.getElementById('playerContainer');
+            if (!document.fullscreenElement) {
+                if (playerContainer.requestFullscreen) {
+                    playerContainer.requestFullscreen();
+                } else if (playerContainer.mozRequestFullScreen) {
+                    playerContainer.mozRequestFullScreen();
+                } else if (playerContainer.webkitRequestFullscreen) {
+                    playerContainer.webkitRequestFullscreen();
+                } else if (playerContainer.msRequestFullscreen) {
+                    playerContainer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.episodes-sidebar');
+            const button = document.querySelector('.toggle-sidebar-button');
+            sidebar.classList.toggle('closed');
+            button.textContent = sidebar.classList.contains('closed') ? 'Abrir Barra' : 'Fechar Barra';
+        }
+
         window.onload = carregarSerie;
     </script>
 </head>
 <body>
-    <h1 id="tituloSerie">Carregando...</h1>
     <div class="content">
         <div id="playerContainer" class="player"></div>
-        <div class="episodes">
-            <ul id="episodiosList"></ul>
+        <button class="toggle-sidebar-button" onclick="toggleSidebar()">Fechar Barra</button>
+        <div class="episodes-sidebar">
+            <h2 id="tituloSerie">Carregando...</h2>
+            <div class="episodes-list">
+                <ul id="episodiosList"></ul>
+            </div>
+            <div class="navigation-buttons">
+                <button id="prevButton" onclick="navegarParaPagina(-1)">Anterior</button>
+                <button class="fullscreen-button" onclick="toggleFullscreen()">Tela Cheia</button>
+                <button id="nextButton" onclick="navegarParaPagina(1)">Próximo</button>
+            </div>
         </div>
     </div>
 </body>
-</html>
+</html>''
+ 

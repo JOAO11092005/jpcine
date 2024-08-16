@@ -127,7 +127,7 @@ async function removerFilme(key) {
 }
 
 // Função para abrir o modal de edição
-function abrirModalEdicao(key, currentVideoURL) {
+function abrirModalEdicao(key, currentVideoURL, currentTitle, currentLogo) {
     const modal = document.getElementById('editModal');
     const closeModal = document.getElementsByClassName('close')[0];
 
@@ -136,11 +136,19 @@ function abrirModalEdicao(key, currentVideoURL) {
     const editVideoInput = document.getElementById('edit-video');
     editVideoInput.value = currentVideoURL;
 
+    const editTitleInput = document.getElementById('edit-title');
+    editTitleInput.value = currentTitle;
+
+    const editLogoInput = document.getElementById('edit-logo');
+    editLogoInput.value = currentLogo;
+
     const editForm = document.getElementById('edit-movie-form');
     editForm.onsubmit = async function(event) {
         event.preventDefault();
         const newVideoURL = editVideoInput.value;
-        await editarFilme(key, newVideoURL);
+        const newTitle = editTitleInput.value;
+        const newLogo = editLogoInput.value;
+        await editarFilme(key, newTitle, newLogo, newVideoURL);
         modal.style.display = 'none';
     };
 
@@ -156,16 +164,19 @@ function abrirModalEdicao(key, currentVideoURL) {
 }
 
 // Função para editar um filme
-async function editarFilme(key, newVideoURL) {
+async function editarFilme(key, newTitle, newLogo, newVideoURL) {
     try {
-        await database.ref('filmes/' + key).update({ video: newVideoURL });
+        await database.ref('filmes/' + key).update({ 
+            titulo: newTitle,
+            logo: newLogo,
+            video: newVideoURL 
+        });
         console.log('Filme editado com sucesso!');
         carregarListaFilmes();
     } catch (error) {
         console.error('Erro ao editar filme:', error);
     }
 }
-
 // Captura o evento de submissão do formulário de adicionar filme
 const addMovieForm = document.getElementById('add-movie-form');
 addMovieForm.addEventListener('submit', function(event) {
@@ -353,3 +364,5 @@ async function adicionarErroFilme(movieName, errorDescription) {
 window.onload = function() {
     loadErrosFilmes();
 };
+editButton.addEventListener('click', () => abrirModalEdicao(key, filme.video, filme.titulo, filme.logo)); 
+

@@ -84,18 +84,25 @@
         </section>
     </main>
 
-    <!-- Modal para editar o link do filme -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Editar Link do Filme</h2>
-            <form id="edit-movie-form">
-                <label for="edit-video">Novo URL do Vídeo:</label>
-                <input type="url" id="edit-video" name="edit-video" required>
-                <button type="submit">Salvar Alterações</button>
-            </form>
-        </div>
+    <!-- Modal para editar o filme -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Editar Filme</h2>
+        <form id="edit-movie-form">
+            <label for="edit-title">Novo Nome do Filme:</label>
+            <input type="text" id="edit-title" name="edit-title" required>
+            
+            <label for="edit-logo">Nova URL da Imagem:</label>
+            <input type="url" id="edit-logo" name="edit-logo" required>
+            
+            <label for="edit-video">Novo URL do Vídeo:</label>
+            <input type="url" id="edit-video" name="edit-video" required>
+            
+            <button type="submit">Salvar Alterações</button>
+        </form>
     </div>
+</div>
     <main>
         
     </main>

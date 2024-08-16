@@ -9,13 +9,13 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: #121212;
+            color: #E0E0E0;
             padding: 20px;
         }
         h1 {
             text-align: center;
-            color: #444;
+            color: #E0E0E0;
         }
         form {
             display: flex;
@@ -23,14 +23,21 @@
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
-            background: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: #1E1E1E;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
             border-radius: 8px;
         }
         input, button {
             margin: 10px 0;
             padding: 10px;
             font-size: 16px;
+            background: #333;
+            color: #E0E0E0;
+            border: 1px solid #444;
+            border-radius: 4px;
+        }
+        input::placeholder {
+            color: #B0B0B0;
         }
         button {
             background-color: #007BFF;
@@ -46,10 +53,10 @@
             margin-top: 40px;
         }
         .serie {
-            background: #fff;
+            background: #1E1E1E;
             margin-bottom: 20px;
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
             border-radius: 8px;
             position: relative;
             overflow: hidden;
@@ -62,6 +69,7 @@
             display: block;
             margin-bottom: 10px;
             cursor: pointer;
+            border-radius: 4px;
         }
         .episodios {
             display: none;
@@ -96,6 +104,8 @@
             margin-left: 10px;
             font-size: 14px;
             font-style: italic;
+        }
+        .link-status.active {
             color: green;
         }
         .link-status.inactive {
@@ -103,7 +113,6 @@
         }
     </style>
     <script>
-        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBh1S9IfuLWEa3t3us47yye6NuY5DPCm8k",
             authDomain: "jpcine-b36ff.firebaseapp.com",
@@ -152,13 +161,26 @@
                     const serie = serieSnapshot.val();
                     const serieDiv = document.createElement('div');
                     serieDiv.classList.add('serie');
-                    serieDiv.innerHTML = `<h2>${serie.nome}</h2><img src="${serie.logo}" alt="${serie.nome} Logo" onclick="toggleEpisodios(this)"><div class="episodios"><ul>`;
-                    serie.episodios.forEach((episodio, index) => {
-                        const status = episodio === "indisponível no momento" ? "Sem link" : "Disponivel";
-                        const statusClass = episodio === "indisponível no momento" ? "inactive" : "active";
-                        serieDiv.querySelector('ul').innerHTML += `<li>Episódio ${index + 1} <span class="link-status ${statusClass}">${status}</span> <span class="episodio-btns"><button onclick="editarEpisodio('${serie.nome}', ${index})">Editar</button><button onclick="removerEpisodio('${serie.nome}', ${index})">Remover</button></span></li>`;
-                    });
-                    serieDiv.innerHTML += '</ul></div>';
+                    serieDiv.innerHTML = `
+                        <h2>${serie.nome}</h2>
+                        <img src="${serie.logo}" alt="${serie.nome} Logo" onclick="toggleEpisodios(this)">
+                        <div class="episodios">
+                            <ul>
+                                ${serie.episodios.map((episodio, index) => `
+                                    <li>
+                                        Episódio ${index + 1} 
+                                        <span class="link-status ${episodio === 'indisponível no momento' ? 'inactive' : 'active'}">
+                                            ${episodio === 'indisponível no momento' ? 'Sem link' : 'Disponível'}
+                                        </span>
+                                        <span class="episodio-btns">
+                                            <button onclick="editarEpisodio('${serie.nome}', ${index})">Editar</button>
+                                            <button onclick="removerEpisodio('${serie.nome}', ${index})">Remover</button>
+                                        </span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
                     episodiosContainer.appendChild(serieDiv);
                 });
             });
