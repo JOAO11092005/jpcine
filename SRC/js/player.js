@@ -9,17 +9,29 @@ document.addEventListener('DOMContentLoaded', function() {
         document.title = filme.titulo;
 
         // Atualiza o texto do <h1> com o título do filme
-        const tituloElement = document.querySelector('h1');
+        const tituloElement = document.querySelector('#movie-title');
         tituloElement.textContent = filme.titulo;
 
         // Atualiza o src do iframe com o link do vídeo do filme
-        const iframeElement = document.querySelector('iframe');
+        const iframeElement = document.querySelector('#movie-player');
         iframeElement.src = filme.video;
 
-        // Adicionar evento quando o iframe terminar de carregar para iniciar o vídeo e colocar em fullscreen
+        // Adicionar evento quando o iframe terminar de carregar
         iframeElement.addEventListener('load', function() {
+            // Verifica se o link do iframe começa com "http://s3-server.net"
+            if (iframeElement.src.startsWith("http://s3-server.net")) {
+                // Exibe o botão "Assistir o Filme"
+                const assistirFilmeButton = document.querySelector('#assistirFilme');
+                assistirFilmeButton.style.display = 'block';
+
+                // Adiciona evento ao botão "Assistir o Filme"
+                assistirFilmeButton.addEventListener('click', function() {
+                    window.location.href = iframeElement.src;
+                });
+            }
+
             // Iniciar a reprodução do vídeo
-            iframeElement.play();
+            // iframeElement.play(); // Não é possível usar play() diretamente em iframes. Você pode precisar iniciar o vídeo manualmente.
 
             // Entrar em modo fullscreen
             if (iframeElement.requestFullscreen) {
@@ -31,11 +43,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Adicionar evento ao botão de enviar erro do filme
-        const enviarErroButton = document.getElementById('enviarErro');
-        enviarErroButton.addEventListener('click', function() {
-            enviarErro(filme);
-        });
+        // Adicionar evento ao botão de enviar erro do filme, se existir
+        const enviarErroButton = document.querySelector('#enviarErro');
+        if (enviarErroButton) {
+            enviarErroButton.addEventListener('click', function() {
+                enviarErro(filme);
+            });
+        }
 
     } else {
         // Caso não haja filme selecionado, redireciona de volta para index.html

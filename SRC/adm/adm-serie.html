@@ -111,6 +111,18 @@
         .link-status.inactive {
             color: red;
         }
+        .serie-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .serie-actions button {
+            background-color: #dc3545;
+            color: white;
+        }
+        .serie-actions button:hover {
+            background-color: #c82333;
+        }
     </style>
     <script>
         const firebaseConfig = {
@@ -180,6 +192,10 @@
                                 `).join('')}
                             </ul>
                         </div>
+                        <div class="serie-actions">
+                            <button onclick="adicionarEpisodio('${serie.nome}')">Adicionar Episódio</button>
+                            <button onclick="removerSerie('${serie.nome}')">Apagar Série</button>
+                        </div>
                     `;
                     episodiosContainer.appendChild(serieDiv);
                 });
@@ -214,6 +230,33 @@
                 .catch(error => {
                     console.error('Erro ao remover episódio:', error);
                 });
+        }
+
+        function adicionarEpisodio(nomeSerie) {
+            const link = prompt('Insira o link para o novo episódio (ou deixe em branco para marcar como indisponível):');
+            if (link !== null) {
+                firebase.database().ref(`series/${nomeSerie}/episodios`).push(link ? link : "indisponível no momento")
+                    .then(() => {
+                        alert('Episódio adicionado com sucesso!');
+                        carregarSeries();
+                    })
+                    .catch(error => {
+                        console.error('Erro ao adicionar episódio:', error);
+                    });
+            }
+        }
+
+        function removerSerie(nomeSerie) {
+            if (confirm('Tem certeza de que deseja apagar esta série? Isso removerá todos os episódios.')) {
+                firebase.database().ref(`series/${nomeSerie}`).remove()
+                    .then(() => {
+                        alert('Série removida com sucesso!');
+                        carregarSeries();
+                    })
+                    .catch(error => {
+                        console.error('Erro ao remover série:', error);
+                    });
+            }
         }
 
         window.onload = carregarSeries;
