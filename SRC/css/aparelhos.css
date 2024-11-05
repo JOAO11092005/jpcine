@@ -70,7 +70,7 @@
         cursor: pointer;
     }
    #movie-container{
-    height: 600px;
+    height: 580px;
     overflow-y: auto;
    }
     /* Estilos para o carrossel
@@ -107,6 +107,14 @@
     /* Estilos para o rodapé */
     .filme{
         width: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .filme img{
+        width: 100%;
+        max-width: 500px;
     }
     #movie-container {
         display: flex;
@@ -116,7 +124,8 @@
         flex-wrap: wrap;
         overflow-y: auto;
         background-color: #001;
-        height: 726px;
+        height: 636px;
+        width: 100%;
     }
     .footer {
         background-color: #1c1c1c;
