@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPCINE - Séries</title>
+    <link rel="stylesheet" href="./SRC/css/reset.css">
+    <link rel="stylesheet" href="./SRC/css/player-series-e-animes.css">
+    <link rel="stylesheet" href="./SRC/css/aparelhos.css">
+    <script src="https://kit.fontawesome.com/9256129f72.js" crossorigin="anonymous"></script>
+    <style>
+        .adblock-message {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 500px;
+            height: 300px;
+            padding: 10px;
+            background-color: red;
+            color: white;
+            text-align: center;
+            z-index: 1000;
+            font-size: 20px;
+        }
+        .adblock-message a {
+            color: yellow;
+            text-decoration: underline;
+        }
+        .adblock-message button {
+            background: none;
+            border: none;
+            color: rgb(255, 255, 255);
+            font-size: 40px;
+            cursor: pointer;
+            top: 0;
+            right: 10px;
+            position: absolute;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .loading-circle {
+            border-radius: 50%;
+            border-top: 3px solid red;
+            width: 120px;
+            height: 120px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- <div id="adblock-message" class="adblock-message">
+        <span>Por favor, instale um AdBlock para evitar anúncios durante a navegação. Disponível na <a href="https://chromewebstore.google.com/detail/gighmmpiobklfepjocnamgkkbiglidom" target="_blank">Web Store</a> ou na <a href="https://play.google.com/store/apps/details?id=org.adblockplus.browser" target="_blank">Play Store</a>.</span>
+        <button id="close-adblock-message">&times;</button>
+    </div> -->
+    <header>
+        <a href="index.html">
+            <div class="logo"></div>
+        </a>
+        <div class="pesquisar">
+            <input type="text" id="searchInput" placeholder="Digite a sua série ">
+            <i class="fa-solid fa-magnifying-glass lupa" id="searchButton"></i>
+        </div>
+
+        <!-- <nav>
+            <ul>
+                <li><a href="https://terror-tau.vercel.app/">Terror</a></li>
+                <li><a href="">Drive</a></li>
+            </ul>
+        </nav> -->
+    </header>
+    <main>
+        <div id="serieLogoContainer" class="serie-logo"></div>
+        <!-- <div class="loading" id="loading">
+            <div class="loading-circle"></div>
+        </div> -->
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <h4>Não encontrou o seu filme? Faça o seu pedido!!</h4>
+            <p>ou faca sua reclamacao!! :D</p>
+            <div class="social-media">
+                <input type="text" id="pedido">
+                <button id="botaopedido">Enviar</button>
+            </div>
+            <p>&copy; 2024 JPCINE. Todos os direitos reservados.</p>
+            <p>acesse nossos sites <a href="https://jpcine.vercel.app">Filmes</a> & <a href="https://terror-tau.vercel.app">Terror</a></p>
+        </div>
+    </footer>
+    <div id="confirmacaoModal" class="modal">
+        <div class="modal-content">
+            <h2>Pedido Enviado com Sucesso!</h2>
+            <p>O seu pedido foi enviado com sucesso. Obrigado!</p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="./SRC/js/serie.js"></script>
+</body>
+</html>

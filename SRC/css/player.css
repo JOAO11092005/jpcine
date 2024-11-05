@@ -1,0 +1,71 @@
+body {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    background-color: rgb(3, 3, 3);
+    color: white;
+    margin: 0; /* Remove default margin */
+    height: 100vh; /* Full height */
+}
+
+iframe {
+    width: 100%;
+    height: 90vh;
+}
+
+.opcoes {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+#enviarErro {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(0, 0, 154);
+    color: white;
+    border: 1px solid red;
+    margin-left: 30px;
+}
+
+#enviarErro:hover {
+    background-color: blue;
+    cursor: pointer;
+}
+
+h1 {
+    margin-left: 50%;
+    transform: translateX(-70%);
+    display: none;
+}
+
+.opcoes a {
+    color: white;
+    margin-left: 30px;
+    background-color: rgb(0, 0, 154);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 50px;
+}
+
+#assistirFilme {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed position */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust to truly center */
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: rgb(0, 0, 154);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#assistirFilme:hover {
+    background-color: blue;
+}
