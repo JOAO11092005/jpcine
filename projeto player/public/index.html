@@ -4,37 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player de Vídeo Personalizado</title>
+    <title>JPCINE - WEB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="video-container" id="videoContainer">
         <!-- Player de vídeo HTML5 -->
-        <video id="videoPlayer" onclick="togglePlayPause()">
-            <source src="">
+        <video id="videoPlayer" onclick="togglePlayPause()" >
+            <source
+                src="">
             Seu navegador não suporta a tag de vídeo.
         </video>
 
+        <!-- Loader -->
+        <div id="loader" class="loader hidden">Carregando...</div>
         <!-- Controles personalizados -->
         <div class="video-controls">
             <span class="video-time" id="videoTime">0:00</span>
             <input type="range" id="videoSeek" value="0" step="1" min="0" max="100">
             <div class="controles">
-                <!-- Botões de controle com `aria-label` para acessibilidade -->
-                <button onclick="rewindVideo(10)" aria-label="Retroceder 10 segundos"><i class="fas fa-undo"></i>
-                    10s</button>
-                <button onclick="togglePlayPause()" id="playPauseBtn" aria-label="Reproduzir/Pausar"><i
-                        class="fas fa-play"></i></button>
-                <button onclick="forwardVideo(10)" aria-label="Avançar 10 segundos">10s <i
-                        class="fas fa-redo"></i></button>
+                <!-- Botão de retroceder 10 segundos -->
+                <button onclick="rewindVideo(10)" aria-label="Retroceder 10 segundos" class="control-button">
+                    <i class="fa-solid fa-arrow-rotate-left"></i>
+                    <span class="control-text">10</span>
+                </button>
+
+                <!-- Botão de play/pause -->
+                <button onclick="togglePlayPause()" id="playPauseBtn" aria-label="Reproduzir/Pausar"
+                    class="control-button">
+                    <i class="fas fa-play"></i>
+                </button>
+
+                <!-- Botão de avançar 10 segundos -->
+                <button onclick="forwardVideo(10)" aria-label="Avançar 10 segundos" class="control-button">
+                    <span class="control-text">10</span>
+                    <i class="fas fa-redo"></i>
+                </button>
                 <div class="opcoes">
                     <button onclick="toggleMute()" aria-label="Silenciar/Desmutar"><i id="muteIcon"
                             class="fas fa-volume-up"></i></button>
                     <button onclick="toggleFullscreen()" aria-label="Tela cheia"><i class="fas fa-expand"></i></button>
                 </div>
             </div>
+
         </div>
     </div>
 
