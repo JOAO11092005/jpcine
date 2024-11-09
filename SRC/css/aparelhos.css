@@ -114,7 +114,8 @@
     }
     .filme img{
         width: 100%;
-        max-width: 500px;
+        max-width: 230px;
+        
     }
     #movie-container {
         display: flex;

@@ -99,7 +99,7 @@ header > .pesquisar > .lupa:hover {
     flex-wrap: wrap;
     overflow-y: auto;
     background-color: #001;
-    height: 726px;
+    height: 770px;
 }
 
 .filme {
@@ -120,6 +120,13 @@ header > .pesquisar > .lupa:hover {
     /* box-shadow: 5px 10px 50px 5px rgb(247, 247, 247); */
     background-color: black;
     cursor: pointer;
+}
+.filme h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px; /* Ajuste conforme necessário */
+    font-size: 16px; /* Ajuste o tamanho conforme desejado */
 }
 
 /* Rodapé */
@@ -225,18 +232,28 @@ header > .pesquisar > .lupa:hover {
 /* Media Queries */
 @media (max-width: 1400px) {
     #movie-container {
-        height: 400px;
+        display: flex;
+        flex-wrap: wrap;
+        overflow-y: auto;
+        height: 460px;
     }
     
     .filme {
+        display: flex;
+        flex: 1 1 200px;
         width: 200px;
         max-width: 200px;
+        max-width: 200px;
     }
-
+    .filme h3{
+        display: none;
+    }
     .filme img {
-        width: 250px;
-        max-width: 280px;
-        max-height: 400px;
+        width: 100%; /* Faz com que a imagem ocupe 100% da largura do item */
+        max-width: 200px;
+        height: 300px; /* Preserva a proporção da imagem */
+        max-height: 300px; /* Limita a altura para manter o layout consistente */
+        object-fit: cover; /* Ajusta a imagem para cobrir o espaço */
     }
 
     #searchInput {

@@ -179,3 +179,11 @@ button:hover {
 #videoTime{
     color: white;
 }
+@media (max-width: 635px){
+    #muteIcon{
+        display: none;
+    }
+    .fa-expand{
+        display: none;
+    }
+}
