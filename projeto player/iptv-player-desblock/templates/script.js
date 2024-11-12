@@ -4,13 +4,7 @@ const timeDisplay = document.getElementById("videoTime");
 const seekBar = document.getElementById("videoSeek");
 const muteIcon = document.getElementById("muteIcon");
 const videoContainer = document.getElementById("videoContainer");
-const videoControls = document.querySelector(".video-controls");
-const loadingScreen = document.getElementById("loadingScreen");
-const loadingPercentage = document.getElementById("loadingPercentage");
 const loader = document.getElementById("loader");
-const voltar = document.querySelector('.voltar');
-
-let mouseMoveTimeout;
 
 // Função para alternar entre reproduzir e pausar o vídeo e atualizar o ícone
 function togglePlayPause() {
@@ -81,7 +75,7 @@ function loadVideo() {
 
         video.addEventListener('canplay', () => {
             video.play().catch(error => console.error("Erro ao iniciar o vídeo:", error));
-            loadingScreen.style.display = 'none';
+            loader.classList.add("hidden");
         });
 
         video.addEventListener('progress', updateLoadingProgress);
@@ -95,52 +89,24 @@ function updateLoadingProgress() {
     let buffered = video.buffered;
     if (buffered.length > 0) {
         let loaded = (buffered.end(0) / video.duration) * 100;
-        loadingPercentage.textContent = `${Math.round(loaded)}%`;
-        loadingScreen.style.display = loaded < 100 ? 'block' : 'none';
+        loader.textContent = `Carregando... ${Math.round(loaded)}%`;
+        loader.style.display = loaded < 100 ? 'block' : 'none';
     }
 }
-
-// Mostra o indicador de carregamento quando o vídeo está em espera para carregar
-video.addEventListener("waiting", () => {
-    loader.classList.remove("hidden");
-});
-
-// Oculta o indicador de carregamento quando o vídeo começa a reproduzir
-video.addEventListener("playing", () => {
-    loader.classList.add("hidden");
-});
 
 // Atualiza o progresso do vídeo e tempo durante a reprodução
 video.addEventListener("timeupdate", updateProgress);
 seekBar.addEventListener("input", seekVideo);
 
-// Função para ocultar os controles do vídeo
-function hideControls() {
-    videoControls.classList.add("hidden");
-    voltar.classList.add("hidden")
-}
+// Mostra o indicador de carregamento quando o vídeo está em espera para carregar
+video.addEventListener("waiting", () => {
+    loader.style.display = 'block';
+});
 
-// Função para mostrar os controles do vídeo
-function showControls() {
-    videoControls.classList.remove("hidden");
-    voltar.classList.remove("hidden")
-}
-
-// Atualiza o temporizador para ocultar os controles após inatividade do mouse
-function resetMouseMoveTimeout() {
-    showControls();
-    clearTimeout(mouseMoveTimeout);
-    mouseMoveTimeout = setTimeout(hideControls, 3000);
-}
-
-// Detecta movimento do mouse para resetar o timer de ocultação de controles
-document.addEventListener("mousemove", resetMouseMoveTimeout);
+// Oculta o indicador de carregamento quando o vídeo começa a reproduzir
+video.addEventListener("playing", () => {
+    loader.style.display = 'none';
+});
 
 // Inicializa o vídeo ao carregar a página
 window.onload = loadVideo;
-resetMouseMoveTimeout();
-// Detecta o movimento do mouse na tela
-document.addEventListener('mousemove', function() {
-    // Adiciona a classe para mudar a tela para preto
-    document.body.classList.add('black-screen');
-});

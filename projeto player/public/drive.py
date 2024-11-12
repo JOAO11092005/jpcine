@@ -1,56 +1,42 @@
 import requests
-from urllib.parse import urlparse, parse_qs
+from bs4 import BeautifulSoup
+import re
 
-def get_drive_direct_link(file_id):
-    # Formatar a URL de download direto do Google Drive
-    download_url = f'https://drive.google.com/uc?export=download&id={file_id}'
-    
-    # Fazer a requisição para o Google Drive
-    session = requests.Session()
-    response = session.get(download_url, stream=True)
-
-    # Verificar se foi redirecionado (geralmente quando o link está disponível)
-    if response.status_code == 200:
-        # Procurar pelo link final após o redirecionamento
-        if 'Content-Disposition' in response.headers:
-            final_url = response.url  # O URL final após o redirecionamento
-            return final_url
-        else:
-            print("Erro: Não foi possível encontrar o link de download direto.")
-            return None
-    else:
-        print("Erro ao acessar o Google Drive.")
-        return None
-
-def extract_file_id(drive_url):
-    # Usar urlparse para extrair o ID do arquivo do link fornecido
-    parsed_url = urlparse(drive_url)
-    query_params = parse_qs(parsed_url.query)
-    
-    # Tentar encontrar o 'file_id' no link
-    if 'id' in query_params:
-        return query_params['id'][0]
-    else:
-        print("Erro: O link fornecido não contém um ID válido do Google Drive.")
-        return None
-
-def main():
-    # Perguntar ao usuário o link do Google Drive
-    drive_url = input("Por favor, insira o link do Google Drive: ")
-    
-    # Extrair o ID do arquivo do link fornecido
-    file_id = extract_file_id(drive_url)
-    
-    if file_id:
-        # Obter o link direto para o vídeo
-        direct_link = get_drive_direct_link(file_id)
+def fetch_video_link(url):
+    try:
+        # Envia uma requisição GET para a página
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+        }
+        response = requests.get(url, headers=headers)
         
-        if direct_link:
-            print(f"Link direto para o vídeo: {direct_link}")
+        # Verifica se a requisição foi bem-sucedida
+        if response.status_code != 200:
+            print(f"Erro ao acessar a página: {response.status_code}")
+            return None
+        
+        # Analisa o HTML da página com BeautifulSoup
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Procura links de vídeo com regex (.m3u8 ou .mp4)
+        video_links = re.findall(r'(https?://[^\s]+?\.(?:m3u8|mp4))', soup.prettify())
+        
+        if video_links:
+            # Retorna o primeiro link encontrado
+            print("Link do vídeo encontrado:", video_links[0])
+            return video_links[0]
         else:
-            print("Não foi possível obter o link direto.")
-    else:
-        print("Link inválido. Tente novamente com um link do Google Drive válido.")
+            print("Nenhum link de vídeo encontrado.")
+            return None
 
-if __name__ == "__main__":
-    main()
+    except Exception as e:
+        print("Erro ao buscar o link do vídeo:", e)
+        return None
+
+# Solicita o link da página ao usuário
+url = input("Digite o link da página IPTV: ")
+
+# Captura o link do vídeo e exibe
+video_link = fetch_video_link(url)
+if video_link:
+    print("Link final para reprodução:", video_link)

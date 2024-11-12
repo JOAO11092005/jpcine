@@ -7,37 +7,27 @@
     <title>JPCINE - WEB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Campos de entrada para os links -->
+    <div class="input-container">
+        <input type="text" id="videoUrl" placeholder="Insira o link do vídeo">
+        <input type="text" id="audioUrl" placeholder="Insira o link do áudio">
+        <button onclick="loadMedia()">Carregar Mídia</button>
+    </div>
 
     <div class="video-container" id="videoContainer">
-        <a href="https://jpcine.vercel.app">
-            <div class="voltar">
-                <div class="fugura">
-                    <i class="fa-solid fa-angle-left" style="color: #fafafa;"></i>
-                </div>
-            </div>
-        </a>
         <!-- Player de vídeo HTML5 -->
         <video id="videoPlayer" onclick="togglePlayPause()">
-            <source src="">
             Seu navegador não suporta a tag de vídeo.
         </video>
 
         <!-- Loader -->
-        <div id="loader" class="loader">
-            <div class="orbit"></div>
-        </div>
-
-
-
-
-
+        <div id="loader" class="loader hidden">Carregando...</div>
         <!-- Controles personalizados -->
         <div class="video-controls">
             <span class="video-time" id="videoTime">0:00</span>
@@ -71,8 +61,7 @@
     </div>
 
     <!-- Carregando JavaScript no final para melhor desempenho -->
-    <script src="./script.js"></script>
-    <script src="./pular-18.js"></script>
+    <script src="./src/youtube.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/openplayerjs@latest/dist/openplayer.min.js"></script>
 
 </body>

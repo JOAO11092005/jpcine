@@ -14,30 +14,15 @@
 </head>
 
 <body>
-
     <div class="video-container" id="videoContainer">
-        <a href="https://jpcine.vercel.app">
-            <div class="voltar">
-                <div class="fugura">
-                    <i class="fa-solid fa-angle-left" style="color: #fafafa;"></i>
-                </div>
-            </div>
-        </a>
         <!-- Player de vídeo HTML5 -->
-        <video id="videoPlayer" onclick="togglePlayPause()">
-            <source src="">
+        <video id="videoPlayer" onclick="togglePlayPause()" >
+            <source id="videoSource" src="">
             Seu navegador não suporta a tag de vídeo.
         </video>
 
         <!-- Loader -->
-        <div id="loader" class="loader">
-            <div class="orbit"></div>
-        </div>
-
-
-
-
-
+        <div id="loader" class="loader hidden">Carregando...</div>
         <!-- Controles personalizados -->
         <div class="video-controls">
             <span class="video-time" id="videoTime">0:00</span>
@@ -72,9 +57,6 @@
 
     <!-- Carregando JavaScript no final para melhor desempenho -->
     <script src="./script.js"></script>
-    <script src="./pular-18.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/openplayerjs@latest/dist/openplayer.min.js"></script>
-
 </body>
 
 </html>

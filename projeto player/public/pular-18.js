@@ -2,9 +2,9 @@
 const movieConfig = {
     url: 'https://jpcinefilmes.b-cdn.net/oppenheimer.mp4', // Substitua pelo link do filme que você deseja
     skipSegments: [
-        { start: '00:23:13', end: '00:24:46' }, // Exemplo: de 1h00 até 1h03
+        { start: '00:23:13', end: '00:24:47' },
         { start: '00:74:41', end: '00:77:09' }, 
-        // Adicione mais intervalos conforme necessário
+        
     ]
 };
 
