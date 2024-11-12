@@ -208,39 +208,41 @@ async function loadPedidos() {
     }
 }
 
-// Função para exibir os pedidos na página de administração
+// Função para exibir os pedidos na página
 function displayPedidos(pedidos) {
     const movieRequestsContainer = document.getElementById('movie-requests-container');
-    movieRequestsContainer.innerHTML = '';
+    movieRequestsContainer.innerHTML = ''; // Limpa o container antes de adicionar novos pedidos
 
-    if (pedidos) {
-        Object.keys(pedidos).forEach(key => {
-            const pedido = pedidos[key];
-            const pedidoElement = document.createElement('div');
-            pedidoElement.classList.add('pedido');
+    Object.keys(pedidos).forEach(key => {
+        const pedido = pedidos[key];
+        
+        // Cria um elemento para cada pedido
+        const pedidoElement = document.createElement('div');
+        pedidoElement.classList.add('pedido');
 
-            const filmeElement = document.createElement('p');
-            filmeElement.textContent = `Filme: ${pedido.filme}`;
+        const filmeElement = document.createElement('p');
+        filmeElement.textContent = `Filme: ${pedido.pedido}`; // Exibe o nome do filme
 
-            const statusElement = document.createElement('p');
-            statusElement.textContent = `Status: ${pedido.status}`;
+        // Botão de remover pedido
+        const removerButton = document.createElement('button');
+        removerButton.textContent = 'Remover';
+        removerButton.addEventListener('click', () => removerPedido(key));
 
-            const removerButton = document.createElement('button');
-            removerButton.textContent = 'Remover';
-            removerButton.addEventListener('click', () => removerPedido(key));
+        pedidoElement.appendChild(filmeElement);
+        pedidoElement.appendChild(removerButton);
 
-            pedidoElement.appendChild(filmeElement);
-            pedidoElement.appendChild(statusElement);
-            pedidoElement.appendChild(removerButton);
+        // Adiciona o pedido ao container
+        movieRequestsContainer.appendChild(pedidoElement);
+    });
 
-            movieRequestsContainer.appendChild(pedidoElement);
-        });
-    } else {
+    // Exibe uma mensagem se não houver pedidos
+    if (Object.keys(pedidos).length === 0) {
         const mensagemElement = document.createElement('p');
         mensagemElement.textContent = 'Não há pedidos pendentes.';
         movieRequestsContainer.appendChild(mensagemElement);
     }
 }
+
 
 // Função para remover pedido de filme
 function removerPedido(key) {
@@ -284,39 +286,41 @@ async function loadErrosFilmes() {
     }
 }
 
-// Função para exibir os erros de filmes na página de administração
-function displayErrosFilmes(erros) {
-    const errosContainer = document.getElementById('erros');
-    errosContainer.innerHTML = '';
+function displayPedidos(pedidos) {
+    const movieRequestsContainer = document.getElementById('movie-requests-container');
+    movieRequestsContainer.innerHTML = '';
 
-    if (erros) {
-        Object.keys(erros).forEach(key => {
-            const erro = erros[key];
-            const erroElement = document.createElement('div');
-            erroElement.classList.add('erro');
+    if (pedidos) {
+        Object.keys(pedidos).forEach(key => {
+            const pedido = pedidos[key];
+            console.log(pedido); // Adicione este log para verificar o conteúdo de cada pedido
+
+            const pedidoElement = document.createElement('div');
+            pedidoElement.classList.add('pedido');
 
             const filmeElement = document.createElement('p');
-            filmeElement.textContent = `Filme: ${erro.filme}`;
+            filmeElement.textContent = `Filme: ${pedido.pedido}`;
 
-            const descricaoElement = document.createElement('p');
-            descricaoElement.textContent = `Descrição do Erro: ${erro.descricao}`;
+            const statusElement = document.createElement('p');
+            statusElement.textContent = ``;
 
             const removerButton = document.createElement('button');
             removerButton.textContent = 'Remover';
-            removerButton.addEventListener('click', () => removerErro(key));
+            removerButton.addEventListener('click', () => removerPedido(key));
 
-            erroElement.appendChild(filmeElement);
-            erroElement.appendChild(descricaoElement);
-            erroElement.appendChild(removerButton);
+            pedidoElement.appendChild(filmeElement);
+            pedidoElement.appendChild(statusElement);
+            pedidoElement.appendChild(removerButton);
 
-            errosContainer.appendChild(erroElement);
+            movieRequestsContainer.appendChild(pedidoElement);
         });
     } else {
         const mensagemElement = document.createElement('p');
-        mensagemElement.textContent = 'Não há erros reportados.';
-        errosContainer.appendChild(mensagemElement);
+        mensagemElement.textContent = 'Não há pedidos pendentes.';
+        movieRequestsContainer.appendChild(mensagemElement);
     }
 }
+
 
 // Função para remover um erro de filme
 async function removerErro(key) {

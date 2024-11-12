@@ -10,9 +10,9 @@ const firebaseConfig = {
     measurementId: "G-RWPZQ5G3CR"
 };
 
-// Inicializa o Firebase
-firebase.initializeApp(firebaseConfig);
-
+ // Inicializa o Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 // Referência ao Realtime Database
 const database = firebase.database();
 
@@ -79,3 +79,33 @@ window.onload = function() {
     loadFilmes();
     definirVideoPlayer(); // Chama a função para carregar o vídeo
 };
+// Função para enviar o pedido
+    function enviarPedido() {
+        const pedidoInput = document.getElementById("pedido").value.trim();
+        
+        if (pedidoInput) { // Verifica se o campo não está vazio
+            const pedidosRef = db.ref("pedidos");
+            pedidosRef.push({ pedido: pedidoInput })
+                .then(() => {
+                    // Exibe o modal de confirmação
+                    const modal = document.getElementById("confirmacaoModal");
+                    modal.style.display = "block";
+                    
+                    // Esconde o modal após 0.9 segundos
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                    }, 900);
+                })
+                .catch((error) => {
+                    console.error("Erro ao enviar pedido:", error);
+                });
+            
+            // Limpa o campo de input após enviar
+            document.getElementById("pedido").value = "";
+        } else {
+            alert("Por favor, insira o nome do filme.");
+        }
+    }
+
+    // Evento para o botão de envio
+    document.getElementById("botaopedido").addEventListener("click", enviarPedido);

@@ -6,6 +6,7 @@ function ocultarFilmesRambo() {
         if (titulo.textContent.toLowerCase().includes('rambo')) {
             titulo.closest('.filme').style.display = 'none'; // Oculta o contêiner principal do filme
         }
+        
     });
 }
 
