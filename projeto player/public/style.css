@@ -252,6 +252,17 @@ button:hover {
         border-radius: 50px;
     }
 }
+.video-minutos-faltando{
+    color: white;
+    right: 30px;
+    position: absolute;
+}
+.tempo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
 @media (max-width: 635px){
     #muteIcon{
         display: none;

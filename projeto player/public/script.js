@@ -32,16 +32,28 @@ function forwardVideo(seconds) {
 function rewindVideo(seconds) {
     video.currentTime = Math.max(0, video.currentTime - seconds);
 }
+const videoTimeRemaining = document.getElementById("videoTimeRemaining");
 
-// Função para atualizar a barra de progresso e o display de tempo do vídeo
+// Função para atualizar a barra de progresso, o display de tempo do vídeo e o tempo restante
 function updateProgress() {
     if (!isNaN(video.duration)) {
+        // Atualiza a barra de progresso
         seekBar.value = (video.currentTime / video.duration) * 100;
+
+        // Tempo atual do vídeo em MM:SS
         const minutes = Math.floor(video.currentTime / 60);
         const seconds = Math.floor(video.currentTime % 60).toString().padStart(2, '0');
         timeDisplay.textContent = `${minutes}:${seconds}`;
+
+        // Tempo restante em HH:MM:SS
+        const remainingTime = video.duration - video.currentTime;
+        const hours = Math.floor(remainingTime / 3600);
+        const remainingMinutes = Math.floor((remainingTime % 3600) / 60);
+        const remainingSeconds = Math.floor(remainingTime % 60).toString().padStart(2, '0');
+        videoTimeRemaining.textContent = `-${hours}:${remainingMinutes.toString().padStart(2, '0')}:${remainingSeconds}`;
     }
 }
+
 
 // Função para buscar para um ponto específico do vídeo
 function seekVideo() {

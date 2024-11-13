@@ -11,6 +11,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+     
+     <!-- Carregar as bibliotecas do Firebase com as CDNs -->
+     <!-- Firebase 8.x (versão compatível com scripts simples) -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
 </head>
 
 <body>
@@ -40,7 +46,10 @@
 
         <!-- Controles personalizados -->
         <div class="video-controls">
-            <span class="video-time" id="videoTime">0:00</span>
+            <div class="tempo">
+                <span class="video-time" id="videoTime">0:00</span>
+                <span class="video-minutos-faltando video-time" id="videoTimeRemaining">0:00</span>
+            </div>
             <input type="range" id="videoSeek" value="0" step="1" min="0" max="100">
             <div class="controles">
                 <!-- Botão de retroceder 10 segundos -->
@@ -73,7 +82,13 @@
     <!-- Carregando JavaScript no final para melhor desempenho -->
     <script src="./script.js"></script>
     <script src="./pular-18.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/openplayerjs@latest/dist/openplayer.min.js"></script>
+  
+
+    <!-- <script type="module" src="salvar-auto.js"></script> -->
+
+
+
+
 
 </body>
 
