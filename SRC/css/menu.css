@@ -1,0 +1,110 @@
+.input-menu{
+    display: none;
+}
+:root{
+    ---cor-do-menu: white;
+}
+.arrow{
+  display: none;
+}
+.menu-hamburguer{
+    position: absolute;
+    right: 10px;
+    top: 35px;
+    display: none;
+}
+@media (max-width: 900px){
+    .menu-hamburguer{
+        display: block;
+    }
+    .arrow {
+      display: block;
+      cursor: pointer;
+      font-size: 2rem;
+      color: #ddd0d0;
+      user-select: none;
+  }
+    .filme {
+        text-align: center;
+        overflow: unset;
+    }
+    .filme.active {
+        display: block;
+    }
+}
+.menu-hamburguer label{
+    position: relative;
+    /* display: none; */
+  }
+  .hamburguer{
+    width: 30px;
+    height: 3px;
+    border-radius: 5px;
+    background-color: var(---cor-do-menu);
+    transition: 0.5s ease-in-out;
+  }
+  .hamburguer::after{
+    content: '';
+    width: 30px;
+    height: 3px;
+    border-radius: 5px;
+    background-color:var(---cor-do-menu);
+    position: absolute;
+    top: -10px;
+    transition: 0.5s ease-in-out;
+  }
+  .hamburguer::before{
+    content: '';
+    width: 30px;
+    height: 3px;
+    border-radius: 5px;
+    background-color: var(---cor-do-menu);
+    position: absolute;
+    bottom: -10px;
+    transition: 0.5s ease-in-out;
+  }
+  #hamburguer:checked ~.menu-hamburguer #girar{
+    transform: rotate(45deg);
+    transition: 0.5s ease-in-out;
+  }
+  #hamburguer:checked ~.menu-hamburguer #girar::after{
+    transform: rotate(90deg);
+    top: 0px;
+    transition: 0.5s ease-in-out;
+  }
+  #hamburguer:checked ~.menu-hamburguer #girar::before{
+    transform: rotate(90deg);
+    bottom: 0px;
+    transition: 0.5s ease-in-out;
+  }
+  .arrow{
+    position: absolute;
+    top: 50%;
+  }
+  #prev{
+    left: 10px;
+  }
+  #next{
+    right: 10px;
+  }
+  /* Estilo para o campo de pesquisa */
+#search-container {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  width: 90%;
+  max-width: 400px;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 8px;
+  display: none;
+}
+
+#search-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  color: black;
+  border: none;
+  border-radius: 5px;
+}

@@ -10,9 +10,9 @@ const firebaseConfig = {
     measurementId: "G-RWPZQ5G3CR"
 };
 
- // Inicializa o Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+// Inicializa o Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 // Referência ao Realtime Database
 const database = firebase.database();
 
@@ -46,7 +46,7 @@ function displayFilmes(filmesParaExibir) {
         const tituloElement = document.createElement('h3');
         tituloElement.textContent = filme.titulo;
 
-        filmeElement.addEventListener('click', function() {
+        filmeElement.addEventListener('click', function () {
             const videoUrlCodificada = btoa(filme.video); // Codifica a URL do vídeo
             window.location.href = `./projeto player/public/index.html?videoUrl=${encodeURIComponent(videoUrlCodificada)}`;
         });
@@ -75,37 +75,78 @@ function definirVideoPlayer() {
 }
 
 // Carregar filmes ao iniciar a página
-window.onload = function() {
+window.onload = function () {
     loadFilmes();
     definirVideoPlayer(); // Chama a função para carregar o vídeo
 };
 // Função para enviar o pedido
-    function enviarPedido() {
-        const pedidoInput = document.getElementById("pedido").value.trim();
-        
-        if (pedidoInput) { // Verifica se o campo não está vazio
-            const pedidosRef = db.ref("pedidos");
-            pedidosRef.push({ pedido: pedidoInput })
-                .then(() => {
-                    // Exibe o modal de confirmação
-                    const modal = document.getElementById("confirmacaoModal");
-                    modal.style.display = "block";
-                    
-                    // Esconde o modal após 0.9 segundos
-                    setTimeout(() => {
-                        modal.style.display = "none";
-                    }, 900);
-                })
-                .catch((error) => {
-                    console.error("Erro ao enviar pedido:", error);
-                });
-            
-            // Limpa o campo de input após enviar
-            document.getElementById("pedido").value = "";
-        } else {
-            alert("Por favor, insira o nome do filme.");
-        }
-    }
+function enviarPedido() {
+    const pedidoInput = document.getElementById("pedido").value.trim();
 
-    // Evento para o botão de envio
-    document.getElementById("botaopedido").addEventListener("click", enviarPedido);
+    if (pedidoInput) { // Verifica se o campo não está vazio
+        const pedidosRef = db.ref("pedidos");
+        pedidosRef.push({ pedido: pedidoInput })
+            .then(() => {
+                // Exibe o modal de confirmação
+                const modal = document.getElementById("confirmacaoModal");
+                modal.style.display = "block";
+
+                // Esconde o modal após 0.9 segundos
+                setTimeout(() => {
+                    modal.style.display = "none";
+                }, 900);
+            })
+            .catch((error) => {
+                console.error("Erro ao enviar pedido:", error);
+            });
+
+        // Limpa o campo de input após enviar
+        document.getElementById("pedido").value = "";
+    } else {
+        alert("Por favor, insira o nome do filme.");
+    }
+}
+
+// Evento para o botão de envio
+document.getElementById("botaopedido").addEventListener("click", enviarPedido);
+document.addEventListener("DOMContentLoaded", () => {
+    const hamburguerCheckbox = document.getElementById("hamburguer");
+    const navMenu = document.getElementById("nav-menu");
+    const searchOption = document.getElementById("search-option");
+    const searchContainer = document.getElementById("search-container");
+    const searchInput = document.getElementById("search-input");
+    const menuItems = document.querySelectorAll("#nav-menu li");
+
+    // Alterna a exibição do menu de navegação ao clicar no ícone do hambúrguer
+    hamburguerCheckbox.addEventListener("change", () => {
+        navMenu.style.display = hamburguerCheckbox.checked ? "block" : "none";
+    });
+
+    // Mostra o campo de pesquisa ao clicar em "Pesquisar" e oculta o menu
+    searchOption.addEventListener("click", (event) => {
+        event.preventDefault();
+        navMenu.style.display = "none"; // Oculta o menu
+        searchContainer.style.display = "block"; // Exibe o campo de pesquisa
+        hamburguerCheckbox.checked = false; // Desmarca o ícone de menu
+        searchInput.focus(); // Foca no campo de pesquisa
+    });
+
+    // Fecha o campo de pesquisa se o usuário clicar fora dele
+    document.addEventListener("click", (event) => {
+        if (!searchContainer.contains(event.target) && event.target !== searchOption && event.target !== hamburguerCheckbox) {
+            searchContainer.style.display = "none";
+        }
+    });
+
+
+
+});
+const botao = document.getElementById('li');
+botao.addEventListener('click', function () {
+    alert('Essa opção está indisponivel estamos desenvolvendo.')
+})
+
+const pedidos = document.querySelector('#pedidos');
+pedidos.addEventListener('click', function () {
+    window.location.href = "pedido.html"
+})

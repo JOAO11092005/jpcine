@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido JPCINE</title>
+    <link rel="stylesheet" href="./pedido.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Envie seu Pedido de Filme no JPCINE</h1>
+        <form id="pedidoForm" onsubmit="enviarPedido(event)">
+            <input type="text" id="pedido" placeholder="Digite o nome do filme" required>
+            <button type="submit">Enviar Pedido</button>
+        </form>
+
+        <!-- Modal de confirmação -->
+        <div id="confirmacaoModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal()">&times;</span>
+                <p>Seu pedido foi enviado com sucesso!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para enviar o pedido
+        function enviarPedido(event) {
+            event.preventDefault(); // Evita o envio do formulário
+
+            const pedidoInput = document.getElementById("pedido").value.trim();
+
+            if (pedidoInput) { // Verifica se o campo não está vazio
+                const pedidosRef = db.ref("pedidos");
+                pedidosRef.push({ pedido: pedidoInput })
+                    .then(() => {
+                        // Exibe o modal de confirmação
+                        const modal = document.getElementById("confirmacaoModal");
+                        modal.style.display = "flex"; // Mostra o modal
+
+                        // Fecha o modal após 3 segundos
+                        setTimeout(() => {
+                            modal.style.display = "none";
+                        }, 3000); // Mantém o modal por 3 segundos
+                    })
+                    .catch((error) => {
+                        console.error("Erro ao enviar pedido:", error);
+                    });
+
+                // Limpa o campo de input após enviar
+                document.getElementById("pedido").value = "";
+            } else {
+                alert("Por favor, insira o nome do filme.");
+            }
+        }
+
+        // Função para fechar o modal
+        function fecharModal() {
+            const modal = document.getElementById("confirmacaoModal");
+            modal.style.display = "none";
+        }
+
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBh1S9IfuLWEa3t3us47yye6NuY5DPCm8k",
+            authDomain: "jpcine-b36ff.firebaseapp.com",
+            databaseURL: "https://jpcine-b36ff-default-rtdb.firebaseio.com",
+            projectId: "jpcine-b36ff",
+            storageBucket: "jpcine-b36ff.appspot.com",
+            messagingSenderId: "123637183843",
+            appId: "1:123637183843:web:10b55a276c398408010f56",
+            measurementId: "G-RWPZQ5G3CR"
+        };
+
+        // Inicializa o Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+    </script>
+</body>
+
+</html>

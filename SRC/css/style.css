@@ -276,3 +276,46 @@ header > .pesquisar > .lupa:hover {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.506);
 }
+/* Estilo para o menu de navegação */
+#nav-menu {
+    position: absolute;
+    top: 50px;
+    width: 250px;
+    height: 400px;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#nav-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#nav-menu li {
+    margin: 10px 0;
+    border-bottom: 1px solid white;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+#nav-menu a:hover {
+    color: #ddd;
+}
