@@ -137,7 +137,7 @@ header > .pesquisar > .lupa:hover {
     text-align: center;
     padding: 10px 0;
     width: 100%;
-    position: absolute;
+    /* position: absolute; */
     bottom: 0;
     font-family: 'Creepster', cursive;
 }
