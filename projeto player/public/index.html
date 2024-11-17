@@ -11,11 +11,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
-     
-     <!-- Carregar as bibliotecas do Firebase com as CDNs -->
-     <!-- Firebase 8.x (versão compatível com scripts simples) -->
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <!-- Carregar as bibliotecas do Firebase com as CDNs -->
+    <!-- Firebase 8.x (versão compatível com scripts simples) -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
 
 </head>
 
@@ -30,10 +30,11 @@
             </div>
         </a>
         <!-- Player de vídeo HTML5 -->
-        <video id="videoPlayer" onclick="togglePlayPause()">
+        <video id="videoPlayer" onclick="togglePlayPause()" preload="metadata">
             <source src="">
             Seu navegador não suporta a tag de vídeo.
         </video>
+
 
         <!-- Loader -->
         <div id="loader" class="loader">
@@ -82,7 +83,30 @@
     <!-- Carregando JavaScript no final para melhor desempenho -->
     <script src="./script.js"></script>
     <script src="./pular-18.js"></script>
-  
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        function loadVideo() {
+            const params = new URLSearchParams(window.location.search);
+            const videoUrlCodificada = params.get('videoUrl');
+
+            if (videoUrlCodificada) {
+                const videoUrl = atob(videoUrlCodificada);
+
+                if (Hls.isSupported()) {
+                    const hls = new Hls();
+                    hls.loadSource(videoUrl);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        video.play();
+                    });
+                } else {
+                    video.src = videoUrl;
+                    video.load();
+                }
+            }
+        }
+    </script>
+
 
     <!-- <script type="module" src="salvar-auto.js"></script> -->
 

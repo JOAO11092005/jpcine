@@ -1,3 +1,4 @@
+// Seleção de elementos HTML
 const video = document.getElementById("videoPlayer");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const timeDisplay = document.getElementById("videoTime");
@@ -5,10 +6,9 @@ const seekBar = document.getElementById("videoSeek");
 const muteIcon = document.getElementById("muteIcon");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.querySelector(".video-controls");
-const loadingScreen = document.getElementById("loadingScreen");
-const loadingPercentage = document.getElementById("loadingPercentage");
 const loader = document.getElementById("loader");
 const voltar = document.querySelector('.voltar');
+const videoTimeRemaining = document.getElementById("videoTimeRemaining");
 
 let mouseMoveTimeout;
 
@@ -32,7 +32,6 @@ function forwardVideo(seconds) {
 function rewindVideo(seconds) {
     video.currentTime = Math.max(0, video.currentTime - seconds);
 }
-const videoTimeRemaining = document.getElementById("videoTimeRemaining");
 
 // Função para atualizar a barra de progresso, o display de tempo do vídeo e o tempo restante
 function updateProgress() {
@@ -53,7 +52,6 @@ function updateProgress() {
         videoTimeRemaining.textContent = `-${hours}:${remainingMinutes.toString().padStart(2, '0')}:${remainingSeconds}`;
     }
 }
-
 
 // Função para buscar para um ponto específico do vídeo
 function seekVideo() {
@@ -93,7 +91,7 @@ function loadVideo() {
 
         video.addEventListener('canplay', () => {
             video.play().catch(error => console.error("Erro ao iniciar o vídeo:", error));
-            loadingScreen.style.display = 'none';
+            loader.classList.add("hidden");
         });
 
         video.addEventListener('progress', updateLoadingProgress);
@@ -107,8 +105,7 @@ function updateLoadingProgress() {
     let buffered = video.buffered;
     if (buffered.length > 0) {
         let loaded = (buffered.end(0) / video.duration) * 100;
-        loadingPercentage.textContent = `${Math.round(loaded)}%`;
-        loadingScreen.style.display = loaded < 100 ? 'block' : 'none';
+        loader.style.display = loaded < 100 ? 'block' : 'none';
     }
 }
 
@@ -129,13 +126,13 @@ seekBar.addEventListener("input", seekVideo);
 // Função para ocultar os controles do vídeo
 function hideControls() {
     videoControls.classList.add("hidden");
-    voltar.classList.add("hidden")
+    voltar.classList.add("hidden");
 }
 
 // Função para mostrar os controles do vídeo
 function showControls() {
     videoControls.classList.remove("hidden");
-    voltar.classList.remove("hidden")
+    voltar.classList.remove("hidden");
 }
 
 // Atualiza o temporizador para ocultar os controles após inatividade do mouse
@@ -151,8 +148,3 @@ document.addEventListener("mousemove", resetMouseMoveTimeout);
 // Inicializa o vídeo ao carregar a página
 window.onload = loadVideo;
 resetMouseMoveTimeout();
-// Detecta o movimento do mouse na tela
-document.addEventListener('mousemove', function() {
-    // Adiciona a classe para mudar a tela para preto
-    document.body.classList.add('black-screen');
-});

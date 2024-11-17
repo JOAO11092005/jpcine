@@ -1,275 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administração de Séries</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #E0E0E0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #E0E0E0;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #1E1E1E;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-        }
-        input, button {
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
-            background: #333;
-            color: #E0E0E0;
-            border: 1px solid #444;
-            border-radius: 4px;
-        }
-        input::placeholder {
-            color: #B0B0B0;
-        }
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #episodiosContainer {
-            margin-top: 40px;
-        }
-        .serie {
-            background: #1E1E1E;
-            margin-bottom: 20px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-        .serie h2 {
-            margin-top: 0;
-        }
-        .serie img {
-            max-width: 200px;
-            display: block;
-            margin-bottom: 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .episodios {
-            display: none;
-        }
-        .serie ul {
-            list-style: none;
-            padding: 0;
-        }
-        .serie ul li {
-            padding: 5px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .episodio-btns {
-            display: flex;
-            align-items: center;
-        }
-        .episodio-btns button {
-            margin-left: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            padding: 5px 10px;
-        }
-        .episodio-btns button:hover {
-            background-color: #0056b3;
-        }
-        .link-status {
-            margin-left: 10px;
-            font-size: 14px;
-            font-style: italic;
-        }
-        .link-status.active {
-            color: green;
-        }
-        .link-status.inactive {
-            color: red;
-        }
-        .serie-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .serie-actions button {
-            background-color: #dc3545;
-            color: white;
-        }
-        .serie-actions button:hover {
-            background-color: #c82333;
-        }
-    </style>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBh1S9IfuLWEa3t3us47yye6NuY5DPCm8k",
-            authDomain: "jpcine-b36ff.firebaseapp.com",
-            databaseURL: "https://jpcine-b36ff-default-rtdb.firebaseio.com",
-            projectId: "jpcine-b36ff",
-            storageBucket: "jpcine-b36ff.appspot.com",
-            messagingSenderId: "123637183843",
-            appId: "1:123637183843:web:10b55a276c398408010f56",
-            measurementId: "G-RWPZQ5G3CR"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        function adicionarSerie() {
-            const nome = document.getElementById('nomeSerie').value;
-            const logo = document.getElementById('logoSerie').value;
-            const quantidade = parseInt(document.getElementById('quantidadeEpisodios').value);
-            const episodios = [];
-
-            for (let i = 1; i <= quantidade; i++) {
-                const link = prompt(`Insira o link para o episódio ${i} (ou deixe em branco para marcar como indisponível):`);
-                episodios.push(link ? link : "indisponível no momento");
-            }
-
-            const novaSerie = {
-                nome: nome,
-                logo: logo,
-                episodios: episodios
-            };
-
-            firebase.database().ref('series/' + nome).set(novaSerie)
-                .then(() => {
-                    alert('Série adicionada com sucesso!');
-                    document.getElementById('seriesForm').reset();
-                    carregarSeries();
-                })
-                .catch(error => {
-                    console.error('Erro ao adicionar série:', error);
-                });
-        }
-
-        function carregarSeries() {
-            firebase.database().ref('series').on('value', snapshot => {
-                const episodiosContainer = document.getElementById('episodiosContainer');
-                episodiosContainer.innerHTML = '';
-                snapshot.forEach(serieSnapshot => {
-                    const serie = serieSnapshot.val();
-                    const serieDiv = document.createElement('div');
-                    serieDiv.classList.add('serie');
-                    serieDiv.innerHTML = `
-                        <h2>${serie.nome}</h2>
-                        <img src="${serie.logo}" alt="${serie.nome} Logo" onclick="toggleEpisodios(this)">
-                        <div class="episodios">
-                            <ul>
-                                ${serie.episodios.map((episodio, index) => `
-                                    <li>
-                                        Episódio ${index + 1} 
-                                        <span class="link-status ${episodio === 'indisponível no momento' ? 'inactive' : 'active'}">
-                                            ${episodio === 'indisponível no momento' ? 'Sem link' : 'Disponível'}
-                                        </span>
-                                        <span class="episodio-btns">
-                                            <button onclick="editarEpisodio('${serie.nome}', ${index})">Editar</button>
-                                            <button onclick="removerEpisodio('${serie.nome}', ${index})">Remover</button>
-                                        </span>
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-                        <div class="serie-actions">
-                            <button onclick="adicionarEpisodio('${serie.nome}')">Adicionar Episódio</button>
-                            <button onclick="removerSerie('${serie.nome}')">Apagar Série</button>
-                        </div>
-                    `;
-                    episodiosContainer.appendChild(serieDiv);
-                });
-            });
-        }
-
-        function toggleEpisodios(img) {
-            const episodiosDiv = img.nextElementSibling;
-            episodiosDiv.style.display = episodiosDiv.style.display === 'none' || episodiosDiv.style.display === '' ? 'block' : 'none';
-        }
-
-        function editarEpisodio(nomeSerie, index) {
-            const novoLink = prompt('Insira o novo link para o episódio (ou deixe em branco para marcar como indisponível):');
-            const link = novoLink ? novoLink : "indisponível no momento";
-
-            firebase.database().ref(`series/${nomeSerie}/episodios/${index}`).set(link)
-                .then(() => {
-                    alert('Link do episódio atualizado com sucesso!');
-                    carregarSeries();
-                })
-                .catch(error => {
-                    console.error('Erro ao atualizar link do episódio:', error);
-                });
-        }
-
-        function removerEpisodio(nomeSerie, index) {
-            firebase.database().ref(`series/${nomeSerie}/episodios/${index}`).remove()
-                .then(() => {
-                    alert('Episódio removido com sucesso!');
-                    carregarSeries();
-                })
-                .catch(error => {
-                    console.error('Erro ao remover episódio:', error);
-                });
-        }
-
-        function adicionarEpisodio(nomeSerie) {
-            const link = prompt('Insira o link para o novo episódio (ou deixe em branco para marcar como indisponível):');
-            if (link !== null) {
-                firebase.database().ref(`series/${nomeSerie}/episodios`).push(link ? link : "indisponível no momento")
-                    .then(() => {
-                        alert('Episódio adicionado com sucesso!');
-                        carregarSeries();
-                    })
-                    .catch(error => {
-                        console.error('Erro ao adicionar episódio:', error);
-                    });
-            }
-        }
-
-        function removerSerie(nomeSerie) {
-            if (confirm('Tem certeza de que deseja apagar esta série? Isso removerá todos os episódios.')) {
-                firebase.database().ref(`series/${nomeSerie}`).remove()
-                    .then(() => {
-                        alert('Série removida com sucesso!');
-                        carregarSeries();
-                    })
-                    .catch(error => {
-                        console.error('Erro ao remover série:', error);
-                    });
-            }
-        }
-
-        window.onload = carregarSeries;
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciamento de Filmes</title>
+  <link rel="stylesheet" href="./+18/styles.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
-    <h1>Painel de Administração de Séries</h1>
-    <form id="seriesForm">
-        <input type="text" id="nomeSerie" placeholder="Nome da Série" required>
-        <input type="text" id="logoSerie" placeholder="URL da Logo" required>
-        <input type="number" id="quantidadeEpisodios" placeholder="Quantidade de Episódios" required>
-        <button type="button" onclick="adicionarSerie()">Adicionar Série</button>
-    </form>
-    <div id="episodiosContainer"></div>
+  <header>
+    <h1>Gerenciamento de Filmes</h1>
+  </header>
+
+  <main>
+    <section id="add-movie">
+      <h2>Adicionar Novo Filme</h2>
+      <form id="add-movie-form">
+        <label for="movie-title">Título:</label>
+        <input type="text" id="movie-title" required>
+        <br>
+        <label for="movie-description">Descrição:</label>
+        <textarea id="movie-description" required></textarea>
+        <br>
+        <label for="movie-poster">Link da Imagem:</label>
+        <input type="url" id="movie-poster" required>
+        <br>
+        <label for="movie-video">Link do Vídeo:</label>
+        <input type="url" id="movie-video" required>
+        <br>
+        <button type="submit">Adicionar Filme</button>
+      </form>
+    </section>
+
+    <section id="movie-list">
+      <h2>Lista de Filmes</h2>
+      <ul id="movies">
+        <!-- A lista de filmes será preenchida dinamicamente -->
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Gerenciamento de Filmes</p>
+  </footer>
+
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDraW0CwVdsVJQ4zGuHbFr7wlxJzkgguXc",
+      authDomain: "jpcineatualizado.firebaseapp.com",
+      projectId: "jpcineatualizado",
+      storageBucket: "jpcineatualizado.firebasestorage.app",
+      messagingSenderId: "516384258493",
+      appId: "1:516384258493:web:795bad79eb4302cec87ad4",
+      measurementId: "G-ZSCKBE3XTP"
+    };
+    
+    // Inicializando o Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Referência para o banco de dados
+    const moviesRef = db.ref('filmes');
+
+    // Função para adicionar filme
+    const addMovieForm = document.getElementById('add-movie-form');
+    addMovieForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById('movie-title').value;
+      const description = document.getElementById('movie-description').value;
+      const poster = document.getElementById('movie-poster').value;
+      const video = document.getElementById('movie-video').value;
+
+      const newMovieRef = moviesRef.push();
+      newMovieRef.set({
+        titulo: title,
+        descricao: description,
+        logo: poster,
+        video: video
+      });
+
+      // Limpar os campos após o envio
+      addMovieForm.reset();
+      
+      // Recarregar a lista de filmes
+      displayMovies();
+    });
+
+    // Função para listar filmes
+    function displayMovies() {
+      const movieList = document.getElementById('movies');
+      movieList.innerHTML = ''; // Limpar lista antes de adicionar novos filmes
+
+      moviesRef.once('value', (snapshot) => {
+        const movies = snapshot.val();
+        if (movies) {
+          for (const movieId in movies) {
+            const movie = movies[movieId];
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <h3>${movie.titulo}</h3>
+              <img src="${movie.logo}" alt="${movie.titulo}" width="200">
+              <p>${movie.descricao}</p>
+              <a href="${movie.video}" target="_blank">Assistir</a>
+            `;
+            movieList.appendChild(li);
+          }
+        } else {
+          movieList.innerHTML = '<p>Não há filmes cadastrados.</p>';
+        }
+      });
+    }
+
+    // Chamar a função para exibir os filmes ao carregar a página
+    window.onload = displayMovies;
+  </script>
 </body>
 </html>

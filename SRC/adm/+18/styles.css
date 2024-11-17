@@ -1,0 +1,148 @@
+/* Reset de estilos padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  header {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    font-size: 2.5em;
+    margin: 0;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  section {
+    margin-bottom: 40px;
+  }
+  
+  h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  #add-movie {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  #add-movie-form label {
+    font-size: 1.1em;
+    margin-top: 10px;
+  }
+  
+  #add-movie-form input,
+  #add-movie-form textarea,
+  #add-movie-form button {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+  }
+  
+  #add-movie-form input,
+  #add-movie-form textarea {
+    background-color: #f9f9f9;
+  }
+  
+  #add-movie-form button {
+    background-color: #5c6bc0;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #add-movie-form button:hover {
+    background-color: #3f4c99;
+  }
+  
+  #movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  #movie-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #movie-list li {
+    background-color: white;
+    width: 280px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  #movie-list li:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  #movie-list li img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  
+  #movie-list li h3 {
+    font-size: 1.5em;
+    margin: 10px;
+  }
+  
+  #movie-list li p {
+    font-size: 1em;
+    color: #777;
+    padding: 0 10px 10px;
+  }
+  
+  #movie-list li a {
+    display: block;
+    text-align: center;
+    background-color: #5c6bc0;
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 0 0 10px 10px;
+    font-size: 1.1em;
+  }
+  
+  #movie-list li a:hover {
+    background-color: #3f4c99;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #222;
+    color: white;
+    font-size: 1em;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+  

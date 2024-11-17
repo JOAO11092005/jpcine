@@ -1,273 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player da Série</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <title>+proibido</title>
+    <link rel="stylesheet" href="./SRC/css/reset.css">
+    <link rel="stylesheet" href="./SRC/css/player-series-e-animes.css">
+    <link rel="stylesheet" href="./SRC/css/aparelhos.css">
+    <script src="https://kit.fontawesome.com/9256129f72.js" crossorigin="anonymous"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #141414;
-            color: #e5e5e5;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            overflow: hidden;
-        }
-
-        .content {
-            flex: 1;
-            display: flex;
-            position: relative;
-        }
-
-        .player {
-            flex: 1;
-            height: 100%;
-            background: #000;
-            position: relative;
-        }
-
-        #playerContainer iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .episodes-sidebar {
-            width: 300px;
-            background: rgba(30, 30, 30, 0.9);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 10px;
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            transition: right 0.3s ease;
-            z-index: 100;
-        }
-
-        .episodes-sidebar.closed {
-            right: -300px;
-        }
-
-        .episodes-sidebar h2 {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #1db954;
-        }
-
-        .episodes-list {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .episodes-list ul {
-            display: flex;
-            flex-direction: column;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            transform: translateY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .episodes-list ul li {
-            margin: 10px 0;
-            text-align: center;
-        }
-
-        .episodes-list ul li a {
-            text-decoration: none;
-            color: #1db954;
-            padding: 10px;
-            border-radius: 5px;
-            background: #222;
-            display: block;
-        }
-
-        .episodes-list ul li a:hover {
-            background: #1db954;
-            color: #141414;
-        }
-
-        .navigation-buttons {
+        .adblock-message {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .navigation-buttons button {
-            background: #1db954;
-            border: none;
-            color: #141414;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 500px;
+            height: 300px;
             padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
+            background-color: red;
+            color: white;
+            text-align: center;
+            z-index: 1000;
+            font-size: 20px;
         }
-
-        .navigation-buttons button:disabled {
-            background: #444;
-            cursor: not-allowed;
+        .adblock-message a {
+            color: yellow;
+            text-decoration: underline;
         }
-
-        .toggle-sidebar-button {
-            background: #1db954;
+        .adblock-message button {
+            background: none;
             border: none;
-            color: #141414;
-            padding: 10px;
+            color: rgb(255, 255, 255);
+            font-size: 40px;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
+            top: 0;
+            right: 10px;
             position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 101;
         }
-
-        .fullscreen-button {
-            background: #1db954;
-            border: none;
-            color: #141414;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
+        .loading {
+            text-align: center;
+            padding: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .loading-circle {
+            border-radius: 50%;
+            border-top: 3px solid red;
+            width: 120px;
+            height: 120px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBh1S9IfuLWEa3t3us47yye6NuY5DPCm8k",
-            authDomain: "jpcine-b36ff.firebaseapp.com",
-            databaseURL: "https://jpcine-b36ff-default-rtdb.firebaseio.com",
-            projectId: "jpcine-b36ff",
-            storageBucket: "jpcine-b36ff.appspot.com",
-            messagingSenderId: "123637183843",
-            appId: "1:123637183843:web:10b55a276c398408010f56",
-            measurementId: "G-RWPZQ5G3CR"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        let currentIndex = 0;
-
-        function obterParametroUrl(nome) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(nome);
-        }
-
-        function atualizarEpisodios(serie) {
-            const episodiosList = document.getElementById('episodiosList');
-            const totalEpisodios = serie.episodios.filter(e => e !== "indisponível no momento").length;
-            const episodiosPorPagina = 3;
-
-            episodiosList.innerHTML = '';
-
-            const episodiosDisponiveis = serie.episodios.filter(e => e !== "indisponível no momento");
-
-            for (let i = currentIndex; i < currentIndex + episodiosPorPagina && i < totalEpisodios; i++) {
-                const episodio = episodiosDisponiveis[i];
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="#" data-url="${episodio}">Episódio ${i + 1}</a>`;
-                episodiosList.appendChild(li);
-
-                li.querySelector('a').onclick = function(event) {
-                    event.preventDefault();
-                    const url = this.getAttribute('data-url');
-                    if (url) {
-                        const playerContainer = document.getElementById('playerContainer');
-                        const iframe = document.createElement('iframe');
-                        iframe.src = url;
-                        iframe.allowFullscreen = true;
-
-                        playerContainer.innerHTML = '';
-                        playerContainer.appendChild(iframe);
-                    }
-                };
-            }
-
-            document.getElementById('prevButton').disabled = currentIndex <= 0;
-            document.getElementById('nextButton').disabled = currentIndex + episodiosPorPagina >= totalEpisodios;
-        }
-
-        function carregarSerie() {
-            const nomeSerie = obterParametroUrl('nome');
-            if (nomeSerie) {
-                firebase.database().ref('series/' + nomeSerie).once('value', snapshot => {
-                    const serie = snapshot.val();
-                    document.getElementById('tituloSerie').innerText = serie.nome;
-
-                    atualizarEpisodios(serie);
-
-                    const primeiroEpisodioDisponivel = serie.episodios.find(e => e !== "indisponível no momento");
-                    if (primeiroEpisodioDisponivel) {
-                        const playerContainer = document.getElementById('playerContainer');
-                        const iframe = document.createElement('iframe');
-                        iframe.src = primeiroEpisodioDisponivel;
-                        iframe.allowFullscreen = true;
-                        playerContainer.appendChild(iframe);
-                    }
-                });
-            }
-        }
-
-        function navegarParaPagina(direcao) {
-            currentIndex += direcao * 3;
-            carregarSerie();
-        }
-
-        function toggleFullscreen() {
-            const playerContainer = document.getElementById('playerContainer');
-            if (!document.fullscreenElement) {
-                if (playerContainer.requestFullscreen) {
-                    playerContainer.requestFullscreen();
-                } else if (playerContainer.mozRequestFullScreen) {
-                    playerContainer.mozRequestFullScreen();
-                } else if (playerContainer.webkitRequestFullscreen) {
-                    playerContainer.webkitRequestFullscreen();
-                } else if (playerContainer.msRequestFullscreen) {
-                    playerContainer.msRequestFullscreen();
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.episodes-sidebar');
-            const button = document.querySelector('.toggle-sidebar-button');
-            sidebar.classList.toggle('closed');
-            button.textContent = sidebar.classList.contains('closed') ? 'Abrir Barra' : 'Fechar Barra';
-        }
-
-        window.onload = carregarSerie;
-    </script>
 </head>
 <body>
-    <div class="content">
-        <div id="playerContainer" class="player"></div>
-        <button class="toggle-sidebar-button" onclick="toggleSidebar()">Fechar Barra</button>
-        <div class="episodes-sidebar">
-            <h2 id="tituloSerie">Carregando...</h2>
-            <div class="episodes-list">
-                <ul id="episodiosList"></ul>
+    <header>
+        <a href="index.html">
+            <div class="logo"></div>
+        </a>
+        <div class="pesquisar">
+            <input type="text" id="searchInput" placeholder="Digite o seu video ">
+            <i class="fa-solid fa-magnifying-glass lupa" id="searchButton"></i>
+        </div>
+    </header>
+    <main>
+        <div id="movie-container"></div>
+        <div class="loading" id="loading">
+            <div class="loading-circle"></div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <h4>Não encontrou o seu filme? Faça o seu pedido!!</h4>
+            <p>ou faca sua reclamacao!! :D</p>
+            <div class="social-media">
+                <input type="text" id="pedido">
+                <button id="botaopedido">Enviar</button>
             </div>
-            <div class="navigation-buttons">
-                <button id="prevButton" onclick="navegarParaPagina(-1)">Anterior</button>
-                <button class="fullscreen-button" onclick="toggleFullscreen()">Tela Cheia</button>
-                <button id="nextButton" onclick="navegarParaPagina(1)">Próximo</button>
-            </div>
+            <p>&copy; 2024 JPCINE. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <div id="confirmacaoModal" class="modal">
+        <div class="modal-content">
+            <h2>Pedido Enviado com Sucesso!</h2>
+            <p>O seu pedido foi enviado com sucesso. Obrigado!</p>
         </div>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="./SRC/js/+18config.js"></script>
 </body>
-</html>''
- 
+</html>
