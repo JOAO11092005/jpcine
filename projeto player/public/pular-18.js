@@ -1,9 +1,9 @@
 // Configuração do filme e dos intervalos para pular
 const movieConfig = {
-    url: 'https://jpcinefilmes.b-cdn.net/oppenheimer.mp4', // Substitua pelo link do filme que você deseja
+    url: 'https://jpcine.b-cdn.net/o%20fisico.mp4', // Substitua pelo link do filme que você deseja
     skipSegments: [
-        { start: '00:23:13', end: '00:24:47' },
-        { start: '00:74:41', end: '00:77:09' }, 
+        { start: '00:17:59', end: '00:19:19' },
+        { start: '00:70:24', end: '00:71:30' }, 
         
     ]
 };
