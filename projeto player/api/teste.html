@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reprodutor HLS</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #000;
+            color: #fff;
+        }
+        video {
+            width: 80%;
+            max-width: 720px;
+            background: black;
+        }
+        #loader {
+            display: none;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="loader">Carregando...</div>
+    <video id="videoPlayer" controls autoplay muted></video>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const video = document.getElementById("videoPlayer");
+            const loader = document.getElementById("loader");
+
+            function loadVideo() {
+                const params = new URLSearchParams(window.location.search);
+                const videoUrlEncoded = params.get('videoUrl');
+
+                if (videoUrlEncoded) {
+                    const videoUrl = atob(videoUrlEncoded);
+                    console.log("URL decodificada:", videoUrl);
+
+                    loader.style.display = "block";
+
+                    if (Hls.isSupported()) {
+                        const hls = new Hls();
+
+                        hls.loadSource(videoUrl);
+                        hls.attachMedia(video);
+
+                        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                            loader.style.display = "none";
+                            video.play().catch(error => console.error("Erro ao reproduzir:", error));
+                        });
+
+                        hls.on(Hls.Events.ERROR, (event, data) => {
+                            console.error("Erro ao carregar o vídeo:", data);
+                            loader.style.display = "none";
+                            alert("Erro ao carregar o vídeo. Verifique o link ou tente novamente.");
+                        });
+                    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                        video.src = videoUrl;
+                        video.addEventListener('loadedmetadata', () => {
+                            loader.style.display = "none";
+                            video.play().catch(error => console.error("Erro ao reproduzir:", error));
+                        });
+                    } else {
+                        alert("Seu navegador não suporta reprodução de vídeos HLS.");
+                        loader.style.display = "none";
+                    }
+                } else {
+                    alert("Nenhum link de vídeo fornecido.");
+                }
+            }
+
+            loadVideo();
+        });
+    </script>
+</body>
+</html>

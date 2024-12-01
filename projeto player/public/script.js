@@ -84,7 +84,23 @@ function loadVideo() {
         const videoUrl = atob(videoUrlCodificada);
         console.log("URL decodificada:", videoUrl);
 
-        video.src = videoUrl;
+        // Verificar se a URL é do Google Drive
+        if (videoUrl.includes("drive.google.com")) {
+            const fileId = getDriveFileId(videoUrl);
+            if (fileId) {
+                // Se for do Google Drive, gerar o link de visualização
+                const driveViewUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                video.src = driveViewUrl;
+                console.log("Link do Google Drive gerado:", driveViewUrl);
+            } else {
+                console.error("Não foi possível extrair o ID do arquivo do Google Drive.");
+            }
+        } else {
+            // Caso não seja do Google Drive, usar o link direto
+            video.src = videoUrl;
+        }
+
+        // Configurações do vídeo
         video.volume = 1.0;
         video.muted = false;
         video.load();
@@ -99,6 +115,32 @@ function loadVideo() {
         console.error("Nenhum link de vídeo encontrado.");
     }
 }
+
+// Função para extrair o ID do arquivo do Google Drive
+function getDriveFileId(url) {
+    const regex = /(?:drive\.google\.com.*(?:\/d\/|file\/d\/))([^\/?&]*)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
+
+// Função para exibir o link de vídeo no player para o usuário
+function displayVideoLink() {
+    const params = new URLSearchParams(window.location.search);
+    const videoUrlCodificada = params.get('videoUrl');
+
+    if (videoUrlCodificada) {
+        const videoUrl = atob(videoUrlCodificada);
+        const videoLinkElement = document.getElementById("videoLink");
+        videoLinkElement.textContent = videoUrl; // Exibe o link para o usuário
+        videoLinkElement.href = videoUrl; // Torna o link clicável para o usuário
+    }
+}
+
+// Chama a função para exibir o link ao carregar a página
+window.onload = function() {
+    loadVideo();
+    displayVideoLink();
+};
 
 // Função para atualizar o progresso do carregamento do vídeo
 function updateLoadingProgress() {

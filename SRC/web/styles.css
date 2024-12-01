@@ -1,0 +1,139 @@
+/* Resetando alguns estilos padrões */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #111;
+    color: white;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #141414;
+    padding: 10px 20px;
+}
+
+.navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #E50914;
+}
+
+.navbar nav ul {
+    display: flex;
+    list-style: none;
+}
+
+.navbar nav ul li {
+    margin: 0 15px;
+}
+
+.navbar nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+.navbar nav ul li a:hover {
+    color: #E50914;
+}
+
+/* Banner */
+.banner {
+    background: url('https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/1F8EB623545FF22EE45B5EC8060B1977FD8132AC91D9EE7E9F56BFEBBE839641/scale?width=1200&aspectRatio=1.78&format=webp') no-repeat center center/cover;
+    padding: 100px 20px;
+    text-align: center;
+    color: white;
+    background-size: cover;
+}
+
+.banner-info h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.banner-info p {
+    font-size: 20px;
+}
+.titulo{
+    position: absolute;
+    top: 70px;
+    left: 47%;
+    font-size: 20px;
+}
+.voltar{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 30px;
+    /* background-color: blue; */
+}
+.fa-solid{
+    font-size: 40px;
+    color: white;
+    padding: 10px;
+    border-radius: 50px;
+    transition: 0.5s;
+}
+.fa-solid:hover{
+    background-color: white;
+    color: black;
+    transition: 0.5s;
+}
+/* Player */
+.player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    width: 80%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% , -50%);
+    background: url(https://jpcine.vercel.app/SRC/img/logo%20nova.png);
+   
+}
+
+.iframe-container {
+    width: 80%;
+    max-width: 1200px;
+    height: 600px;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* Rodapé */
+.footer {
+    background-color: #141414;
+    padding: 30px;
+    text-align: center;
+    color: #777;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 80px;
+}
+
+.footer p {
+    font-size: 14px;
+}
+iframe{
+    border-radius: 10px;
+    border: 1px solid red;
+}
