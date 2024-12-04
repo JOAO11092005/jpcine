@@ -1,26 +1,22 @@
-const fetch = require("node-fetch");
+const express = require('express');
+const app = express();
+const axios = require('axios');
 
-const API_KEY = "AIzaSyDIHXZyMVKWV8EPorCIPcRvUm2bcSSszUI"; // Substitua pela sua API Key válida
-
-module.exports = async (req, res) => {
+app.get('/stream', async (req, res) => {
     const { fileId } = req.query;
-
-    if (!fileId) {
-        return res.status(400).json({ error: "ID do arquivo não fornecido." });
-    }
-
-    const url = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`;
-
+    const driveUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    
     try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            return res.status(response.status).json({ error: "Erro ao obter o arquivo." });
-        }
-
-        res.setHeader("Cache-Control", "public, max-age=3600"); // Cache de 1 hora
-        res.redirect(response.url); // Redireciona para o link temporário do Google Drive
+        const response = await axios({
+            url: driveUrl,
+            method: 'GET',
+            responseType: 'stream',
+        });
+        res.setHeader('Content-Type', 'video/mp4');
+        response.data.pipe(res);
     } catch (error) {
-        console.error("Erro ao acessar o Google Drive:", error);
-        res.status(500).json({ error: "Erro interno do servidor." });
+        res.status(500).send('Erro ao carregar o vídeo');
     }
-};
+});
+
+app.listen(3000, () => console.log('Servidor rodando na porta 3000'));

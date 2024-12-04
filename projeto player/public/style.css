@@ -271,3 +271,6 @@ button:hover {
         display: none;
     }
 }
+.hidden {
+    display: none;
+}

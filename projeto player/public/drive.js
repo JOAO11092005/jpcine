@@ -1,83 +1,53 @@
-// Extrai o ID do arquivo do URL do Google Drive
-function extractDriveFileId(url) {
-    const match = url.match(/\/file\/d\/(.+?)\//);
-    return match ? match[1] : null;
-}
+function loadVideo() {
+    const params = new URLSearchParams(window.location.search);
+    const videoUrlCodificada = params.get('videoUrl');
 
-// Gera um link direto usando a API do Google Drive
-async function getDriveDirectLink(fileId, apiKey) {
-    const apiUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${apiKey}`;
-    try {
-        const response = await fetch(apiUrl, { method: "GET" });
+    if (videoUrlCodificada) {
+        const videoUrl = atob(videoUrlCodificada);
+        console.log("URL decodificada:", videoUrl);
 
-        if (!response.ok) {
-            throw new Error(`Erro na resposta da API: ${response.status}`);
+        const hiddenIframe = document.getElementById("hiddenIframe");
+
+        if (videoUrl.includes("drive.google.com")) {
+            const fileId = getDriveFileId(videoUrl);
+            if (fileId) {
+                // Gera o link de visualização do Google Drive
+                const driveViewUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                
+                // Carrega no iframe oculto
+                hiddenIframe.src = driveViewUrl;
+                hiddenIframe.style.display = "none";
+
+                // Configura o player com o mesmo link
+                video.src = driveViewUrl;
+                console.log("Link do Google Drive gerado:", driveViewUrl);
+            } else {
+                console.error("Não foi possível extrair o ID do arquivo do Google Drive.");
+            }
+        } else {
+            // Caso não seja do Google Drive, usar o link direto
+            video.src = videoUrl;
         }
 
-        return response.url; // Link direto
-    } catch (error) {
-        console.error("Erro ao acessar a API do Google Drive:", error);
-        throw error;
-    }
-}
+        // Configurações do vídeo
+        video.volume = 1.0;
+        video.muted = false;
+        video.load();
 
-// Configura o player de vídeo com o link gerado
-function configureVideoPlayer(directLink) {
-    const videoPlayer = document.getElementById("videoPlayer");
-    if (!videoPlayer) {
-        console.error("Elemento do player de vídeo não encontrado.");
-        return;
-    }
+        video.addEventListener('canplay', () => {
+            video.play().catch(error => console.error("Erro ao iniciar o vídeo:", error));
+            loader.classList.add("hidden");
+        });
 
-    videoPlayer.src = directLink;
-
-    console.log("Link direto configurado no player:", directLink);
-
-    videoPlayer.load();
-    videoPlayer.play().catch((error) =>
-        console.error("Erro ao iniciar a reprodução:", error)
-    );
-}
-
-// Carrega o vídeo do Google Drive
-async function loadDriveVideo(url, apiKey) {
-    const fileId = extractDriveFileId(url);
-
-    if (!fileId) {
-        console.error("ID do arquivo do Google Drive não encontrado no URL.");
-        return;
-    }
-
-    try {
-        const directLink = await getDriveDirectLink(fileId, apiKey);
-        configureVideoPlayer(directLink);
-    } catch (error) {
-        console.error("Não foi possível gerar o link direto do Google Drive.");
-    }
-}
-
-// Processa o URL do vídeo e verifica se é do Google Drive
-function processVideoUrl(apiKey) {
-    const params = new URLSearchParams(window.location.search);
-    const videoUrl = params.get("videoUrl");
-
-    if (!videoUrl) {
-        console.error("Nenhum URL de vídeo fornecido.");
-        return;
-    }
-
-    const decodedUrl = decodeURIComponent(atob(videoUrl));
-    console.log("URL decodificada:", decodedUrl);
-
-    if (decodedUrl.includes("drive.google.com")) {
-        loadDriveVideo(decodedUrl, apiKey);
+        video.addEventListener('progress', updateLoadingProgress);
     } else {
-        console.log("O link fornecido não é um vídeo do Google Drive.");
+        console.error("Nenhum link de vídeo encontrado.");
     }
 }
 
-// Inicializa o processo ao carregar a página
-window.onload = () => {
-    const apiKey = "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"; // Substitua pela sua chave da API do Google
-    processVideoUrl(apiKey);
-};
+// Função para extrair o ID do arquivo do Google Drive
+function getDriveFileId(url) {
+    const regex = /(?:drive\.google\.com.*(?:\/d\/|file\/d\/))([^\/?&]*)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
