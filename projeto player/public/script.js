@@ -9,6 +9,7 @@ const videoControls = document.querySelector(".video-controls");
 const loader = document.getElementById("loader");
 const voltar = document.querySelector('.voltar');
 const videoTimeRemaining = document.getElementById("videoTimeRemaining");
+const fundopreto = document.querySelector('.fundopreto');
 
 let mouseMoveTimeout;
 
@@ -165,16 +166,18 @@ video.addEventListener("playing", () => {
 video.addEventListener("timeupdate", updateProgress);
 seekBar.addEventListener("input", seekVideo);
 
-// Função para ocultar os controles do vídeo
+// Função para ocultar os controles do vídeo e fundo preto
 function hideControls() {
     videoControls.classList.add("hidden");
     voltar.classList.add("hidden");
+    fundopreto.classList.add("hidden");
 }
 
-// Função para mostrar os controles do vídeo
+// Função para mostrar os controles do vídeo e fundo preto
 function showControls() {
     videoControls.classList.remove("hidden");
     voltar.classList.remove("hidden");
+    fundopreto.classList.remove("hidden");
 }
 
 // Atualiza o temporizador para ocultar os controles após inatividade do mouse
@@ -190,56 +193,26 @@ document.addEventListener("mousemove", resetMouseMoveTimeout);
 // Inicializa o vídeo ao carregar a página
 window.onload = loadVideo;
 resetMouseMoveTimeout();
-function loadVideo() {
-    const params = new URLSearchParams(window.location.search);
-    const videoUrlCodificada = params.get('videoUrl');
+let fundoPreto = document.querySelector('.fundopreto'); // Seleciona o fundo preto
+let fundoTimeout; // Variável para controlar o tempo de inatividade do mouse
 
-    if (videoUrlCodificada) {
-        const videoUrl = atob(videoUrlCodificada);
-        console.log("URL decodificada:", videoUrl);
-
-        const hiddenIframe = document.getElementById("hiddenIframe");
-
-        if (videoUrl.includes("drive.google.com")) {
-            const fileId = getDriveFileId(videoUrl);
-            if (fileId) {
-                // Gera o link de visualização do Google Drive
-                const driveViewUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
-                
-                // Carrega no iframe oculto
-                hiddenIframe.src = driveViewUrl;
-                hiddenIframe.style.display = "none";
-
-                // Configura o player com o mesmo link
-                video.src = driveViewUrl;
-                console.log("Link do Google Drive gerado:", driveViewUrl);
-            } else {
-                console.error("Não foi possível extrair o ID do arquivo do Google Drive.");
-            }
-        } else {
-            // Caso não seja do Google Drive, usar o link direto
-            video.src = videoUrl;
-        }
-
-        // Configurações do vídeo
-        video.volume = 1.0;
-        video.muted = false;
-        video.load();
-
-        video.addEventListener('canplay', () => {
-            video.play().catch(error => console.error("Erro ao iniciar o vídeo:", error));
-            loader.classList.add("hidden");
-        });
-
-        video.addEventListener('progress', updateLoadingProgress);
-    } else {
-        console.error("Nenhum link de vídeo encontrado.");
-    }
+// Função para ocultar o fundo preto e os controles após inatividade
+function hideBackgroundAndControls() {
+    fundoPreto.classList.add('hidden'); // Oculta o fundo preto
+    videoControls.classList.add("hidden"); // Oculta os controles
+    voltar.classList.add("hidden"); // Oculta o botão de voltar
 }
 
-// Função para extrair o ID do arquivo do Google Drive
-function getDriveFileId(url) {
-    const regex = /(?:drive\.google\.com.*(?:\/d\/|file\/d\/))([^\/?&]*)/;
-    const match = url.match(regex);
-    return match ? match[1] : null;
+// Função para mostrar o fundo preto e os controles novamente
+function showBackgroundAndControls() {
+    fundoPreto.classList.remove('hidden'); // Mostra o fundo preto
+    videoControls.classList.remove("hidden"); // Mostra os controles
+    voltar.classList.remove("hidden"); // Mostra o botão de voltar
+    clearTimeout(fundoTimeout); // Limpa o timeout de ocultação
+    fundoTimeout = setTimeout(hideBackgroundAndControls, 3000); // Oculta após 3 segundos de inatividade
 }
+
+// Detecta movimento do mouse e reinicia o contador de tempo
+document.addEventListener('mousemove', () => {
+    showBackgroundAndControls();
+});
